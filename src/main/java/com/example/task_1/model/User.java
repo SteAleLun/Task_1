@@ -10,8 +10,8 @@ public class User {
     private String middleName;
     private int role;
     private String password;
-    //private Enum<Status> status;
-    //private Data createdAt;
+    private Enum<Status> status;
+    private Data createdAt;
 
     public int getId() {
         return id;
@@ -59,6 +59,19 @@ public class User {
 
     public void setRole(int role) {
         this.role = role;
+    }
+
+    public Enum<Status> getStatus() {
+        return status;
+    }
+    public void setStatus(Enum<Status> status) {
+        this.status = status;
+    }
+    public Data getCreatedAt() {
+        return createdAt;
+    }
+    public void setCreatedAt(Data createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getPassword() {

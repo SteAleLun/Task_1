@@ -1,37 +1,39 @@
 package com.example.task_1.service;
 
-import com.example.task_1.model.User;
+
+
+import com.example.task_1.model.Role;
 
 import java.util.List;
 
-public interface UserService {
+public interface RoleService {
     /**
-     * Создает нового пользователя
-     * @param user - пользователь для создания
+     * Создает нового клиента
+     * @param role - пользователь для создания
      */
-    void create(User user);
+    void create(Role role);
 
     /**
      * Возвращает список всех имеющихся пользователей
      * @return список пользователей
      */
-    List<User> readAll();
+    List<Role> readAll();
 
     /**
-     * Возвращает пользователя по его ID
-     * @param id - ID пользователя
+     * Возвращает клиента по его ID
+     * @param id - ID клиента
      * @return - объект пользователя с заданным ID
      */
-    User read(int id);
+    Role read(int id);
 
     /**
      * Обновляет пользователя с заданным ID,
      * в соответствии с переданным пользователем
-     * @param user - пользователь в соответсвии с которым нужно обновить данные
+     * @param role - пользователя в соответсвии с которым нужно обновить данные
      * @param id - id пользователя которого нужно обновить
      * @return - true если данные были обновлены, иначе false
      */
-    boolean update(User user, int id);
+    boolean update(Role role, int id);
 
     /**
      * Удаляет пользователя с заданным ID

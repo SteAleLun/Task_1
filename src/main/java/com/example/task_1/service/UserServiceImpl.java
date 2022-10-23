@@ -11,10 +11,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class UserServiceImpl implements UserService {
-    // Хранилище клиентов
+    // Хранилище пользователей
     public static final Map<Integer, User> USER_REPOSITORY_MAP = new HashMap<>();
 
-    //Переменная для генерации ID клиента
+    //Переменная для генерации ID пользователя
     public static final AtomicInteger USER_ID_HOLDER = new AtomicInteger();
 
 
