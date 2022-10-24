@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     public boolean changePassword(UUID id){
         if(userRepository.existsById(id)){
             userRepository.getReferenceById(id).setPassword(
-                    userRepository.getReferenceById(id).getPassword()
+                    (bCryptPasswordEncoder.encode(userRepository.getReferenceById(id).getPassword()))
             );
         }
         return false;
