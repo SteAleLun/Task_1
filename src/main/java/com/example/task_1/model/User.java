@@ -1,15 +1,33 @@
 package com.example.task_1.model;
 
+import javax.persistence.*;
 import javax.xml.crypto.Data;
 import java.util.UUID;
 
+@Entity
+@Table(name ="users")
 public class User {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private UUID id;
+
+    @Column(name ="email")
     private String email;
+
+    @Column(name ="familyName")
     private String familyName;
+
+    @Column(name ="name")
     private String name;
+
+    @Column(name ="middleName")
     private String middleName;
+
+    @Column(name ="role")
     private UUID role;
+
+    @Column(name ="password")
     private String password;
 
     //private Enum<Status> status;

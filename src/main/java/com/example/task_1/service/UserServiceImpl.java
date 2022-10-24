@@ -1,51 +1,49 @@
 package com.example.task_1.service;
 
 import com.example.task_1.model.User;
+import com.example.task_1.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class UserServiceImpl implements UserService {
-    // Хранилище пользователей
-    public static final Map<UUID, User> USER_REPOSITORY_MAP = new HashMap<>();
 
-    /*
-     //Переменная для генерации ID пользователя
-    public static final AtomicInteger USER_ID_HOLDER = new AtomicInteger();
-    */
-
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public void create(User user) {
-        //final int userId = USER_ID_HOLDER.incrementAndGet();
-        final UUID userId = UUID.randomUUID();
-        user.setId(userId);
-        USER_REPOSITORY_MAP.put(userId, user);
+        userRepository.save(user);
     }
 
     @Override
     public List<User> readAll() {
-        return new ArrayList<>(USER_REPOSITORY_MAP.values());
+        return userRepository.findAll();
     }
 
     @Override
     public User read(UUID id) {
-        return USER_REPOSITORY_MAP.get(id);
+        return userRepository.getReferenceById(id);
     }
 
     @Override
     public boolean update(User user, UUID id) {
-        if (USER_REPOSITORY_MAP.containsKey(id)){
+        if (userRepository.existsById(id)){
             user.setId(id);
-            USER_REPOSITORY_MAP.put(id, user);
+            userRepository.save(user);
         }
         return false;
     }
 
     @Override
     public boolean delete(UUID id) {
-        return USER_REPOSITORY_MAP.remove(id) != null;
+        if(userRepository.existsById(id)) {
+           userRepository.deleteById(id);
+           return true;
+        }
+        return false;
     }
+
 }
