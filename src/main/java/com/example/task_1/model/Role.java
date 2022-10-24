@@ -1,6 +1,7 @@
 package com.example.task_1.model;
 
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,6 +18,11 @@ public class Role {
 
     @Column(name = "description")
     private String description;
+
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
+    public Role(){
+    }
 
     public UUID getId() {
         return id;

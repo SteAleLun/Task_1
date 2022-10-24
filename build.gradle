@@ -19,6 +19,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest:2.7.5'
 	implementation 'org.springframework.boot:spring-boot-starter-tomcat:2.7.5'
 	implementation 'org.postgresql:postgresql:42.5.0'
+	implementation 'org.springframework.security:spring-security-core:5.7.4'
+
 }
 
 tasks.named('test') {

@@ -3,6 +3,7 @@ package com.example.task_1.service;
 import com.example.task_1.model.User;
 import com.example.task_1.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -12,6 +13,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public void create(User user) {
@@ -38,9 +42,14 @@ public class UserServiceImpl implements UserService {
     }
 
 
-   /* public boolean changePassword(UUID id){
-
-    }*/
+    public boolean changePassword(UUID id){
+        if(userRepository.existsById(id)){
+            userRepository.getReferenceById(id).setPassword(
+                    userRepository.getReferenceById(id).getPassword()
+            );
+        }
+        return false;
+    }
 
 
     @Override

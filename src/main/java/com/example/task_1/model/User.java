@@ -2,6 +2,7 @@ package com.example.task_1.model;
 
 import javax.persistence.*;
 import javax.xml.crypto.Data;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -30,8 +31,14 @@ public class User {
     @Column(name ="password")
     private String password;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Role> roles;
+
     //private Enum<Status> status;
     //private Data createdAt;
+
+    public User(){
+    }
 
     public UUID getId() {
         return id;
@@ -89,7 +96,13 @@ public class User {
         this.password = password;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
 
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     /*public Enum<Status> getStatus() {
         return status;
@@ -103,7 +116,5 @@ public class User {
     public void setCreatedAt(Data createdAt) {
         this.createdAt = createdAt;
     }*/
-
-
 
 }
