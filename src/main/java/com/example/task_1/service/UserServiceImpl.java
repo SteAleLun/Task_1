@@ -37,6 +37,12 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+
+   /* public boolean changePassword(UUID id){
+
+    }*/
+
+
     @Override
     public boolean delete(UUID id) {
         if(userRepository.existsById(id)) {
