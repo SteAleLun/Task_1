@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-
+    @Override
     public boolean changePassword(UUID id){
         if(userRepository.existsById(id)){
             userRepository.getReferenceById(id).setPassword(

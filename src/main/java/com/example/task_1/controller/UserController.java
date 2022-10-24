@@ -57,6 +57,16 @@ public class UserController {
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
+    // Сменить пароль у пользователя
+    @PutMapping(value = "/users/{id}/set-password")
+    public ResponseEntity<?> update(@PathVariable(name="id") UUID id){
+        final boolean updated = userService.changePassword(id);
+
+        return updated
+                ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    }
+
     // Удалить пользователя
     @DeleteMapping(value = "users/{id}")
     public ResponseEntity<?> delete(@PathVariable(name = "id") UUID id){
