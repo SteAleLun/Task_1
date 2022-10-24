@@ -51,6 +51,15 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+    @Override
+    public boolean changeRole(UUID id){
+        if(userRepository.existsById(id)){
+            userRepository.getReferenceById(id).setRole(
+                    (userRepository.getReferenceById(id).getRole())
+            );
+        }
+        return false;
+    }
 
     @Override
     public boolean delete(UUID id) {
