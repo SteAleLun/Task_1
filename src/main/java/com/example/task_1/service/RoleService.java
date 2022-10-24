@@ -5,6 +5,7 @@ package com.example.task_1.service;
 import com.example.task_1.model.Role;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface RoleService {
     /**
@@ -24,7 +25,8 @@ public interface RoleService {
      * @param id - ID клиента
      * @return - объект пользователя с заданным ID
      */
-    Role read(int id);
+    //Role read(int id);
+    Role read(UUID id);
 
     /**
      * Обновляет пользователя с заданным ID,
@@ -33,12 +35,13 @@ public interface RoleService {
      * @param id - id пользователя которого нужно обновить
      * @return - true если данные были обновлены, иначе false
      */
-    boolean update(Role role, int id);
+    //boolean update(Role role, int id);
+    boolean update(Role role, UUID id);
 
     /**
      * Удаляет пользователя с заданным ID
      * @param id - id пользователя, которого нужно удалить
      * @return - true если пользователь был удален, иначе false
      */
-    boolean delete(int id);
+    boolean delete(UUID id);
 }

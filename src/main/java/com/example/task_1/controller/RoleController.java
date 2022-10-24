@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class RoleController {
@@ -35,7 +36,7 @@ public class RoleController {
     }
 
     @GetMapping(value ="/roles/{id}")
-    public ResponseEntity<Role> read(@PathVariable(name = "id") int id){
+    public ResponseEntity<Role> read(@PathVariable(name = "id") UUID id){
         final Role role = roleService.read(id);
 
         return role != null
@@ -44,7 +45,7 @@ public class RoleController {
     }
 
     @PutMapping(value="/roles/{id}")
-    public ResponseEntity<?> update(@PathVariable(name = "id") int id, @RequestBody Role role){
+    public ResponseEntity<?> update(@PathVariable(name = "id") UUID id, @RequestBody Role role){
         final boolean updated = roleService.update(role, id);
 
         return updated
@@ -53,7 +54,7 @@ public class RoleController {
     }
 
     @DeleteMapping(value = "/roles/{id}")
-    public ResponseEntity<?> delete(@PathVariable(name = "id") int id){
+    public ResponseEntity<?> delete(@PathVariable(name = "id") UUID id){
         final boolean deleted = roleService.delete(id);
 
         return deleted

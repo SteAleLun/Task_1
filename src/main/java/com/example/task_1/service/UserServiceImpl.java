@@ -3,24 +3,24 @@ package com.example.task_1.service;
 import com.example.task_1.model.User;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class UserServiceImpl implements UserService {
     // Хранилище пользователей
-    public static final Map<Integer, User> USER_REPOSITORY_MAP = new HashMap<>();
+    public static final Map<UUID, User> USER_REPOSITORY_MAP = new HashMap<>();
 
-    //Переменная для генерации ID пользователя
+    /*
+     //Переменная для генерации ID пользователя
     public static final AtomicInteger USER_ID_HOLDER = new AtomicInteger();
+    */
 
 
     @Override
     public void create(User user) {
-        final int userId = USER_ID_HOLDER.incrementAndGet();
+        //final int userId = USER_ID_HOLDER.incrementAndGet();
+        final UUID userId = UUID.randomUUID();
         user.setId(userId);
         USER_REPOSITORY_MAP.put(userId, user);
     }
@@ -31,12 +31,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User read(int id) {
+    public User read(UUID id) {
         return USER_REPOSITORY_MAP.get(id);
     }
 
     @Override
-    public boolean update(User user, int id) {
+    public boolean update(User user, UUID id) {
         if (USER_REPOSITORY_MAP.containsKey(id)){
             user.setId(id);
             USER_REPOSITORY_MAP.put(id, user);
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean delete(int id) {
+    public boolean delete(UUID id) {
         return USER_REPOSITORY_MAP.remove(id) != null;
     }
 }

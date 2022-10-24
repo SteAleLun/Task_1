@@ -3,6 +3,7 @@ package com.example.task_1.service;
 import com.example.task_1.model.User;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserService {
     /**
@@ -22,7 +23,8 @@ public interface UserService {
      * @param id - ID пользователя
      * @return - объект пользователя с заданным ID
      */
-    User read(int id);
+    //User read(int id);
+    User read(UUID id);
 
     /**
      * Обновляет пользователя с заданным ID,
@@ -31,12 +33,14 @@ public interface UserService {
      * @param id - id пользователя которого нужно обновить
      * @return - true если данные были обновлены, иначе false
      */
-    boolean update(User user, int id);
+    //boolean update(User user, int id);
+
+    boolean update(User user, UUID id);
 
     /**
      * Удаляет пользователя с заданным ID
      * @param id - id пользователя, которого нужно удалить
      * @return - true если пользователь был удален, иначе false
      */
-    boolean delete(int id);
+    boolean delete(UUID id);
 }
