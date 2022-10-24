@@ -33,9 +33,16 @@ public interface UserService {
      * @param id - id пользователя которого нужно обновить
      * @return - true если данные были обновлены, иначе false
      */
-    //boolean update(User user, int id);
 
     boolean update(User user, UUID id);
+
+    /**
+     * Обновляет пароль пользователя с заданным ID,
+     * в соответствии с переданным пользователем
+     * @param id - id пользователя, пароль которого нужно обновить
+     * @return - true если данные были обновлены, иначе false
+     */
+    boolean changePassword(UUID id);
 
     /**
      * Удаляет пользователя с заданным ID
