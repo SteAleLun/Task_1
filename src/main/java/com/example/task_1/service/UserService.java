@@ -12,6 +12,8 @@ public interface UserService {
      */
     void create(User user);
 
+    User registerNewAccount(User user);
+
     /**
      * Возвращает список всех имеющихся пользователей
      * @return список пользователей

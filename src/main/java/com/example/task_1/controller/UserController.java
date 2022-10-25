@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -20,6 +23,22 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    // Проверка, что юзер с таким email отсутствует в базе
+    @PostMapping("/users/registration")
+    public ModelAndView registerUserAccount(
+          @ModelAttribute("user") @Valid User user,
+          HttpServletRequest request,
+          Error errors){
+        try {
+            User registered = userService.registerNewUserAccount(user);
+        } catch (UserAlreadyExistException uaeEx) {
+            mav.addObject("message", "An account for that username/email already exists.");
+            return mav;
+        }
+
+        return new ModelAndView("successRegister", "user", user);
     }
 
     // Создание пользователя
