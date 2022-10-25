@@ -61,8 +61,11 @@ public class UserController {
 
     // Изменение пароля пользователя
     @PutMapping(value = "/users/{id}/set-password")
-    public ResponseEntity<?> update(@PathVariable(name="id") UUID id, String password){
-        final boolean updated = userService.changePassword(id);
+    public ResponseEntity<?> updatePassword(@PathVariable(name="id") UUID id,
+                                            @RequestParam("oldPassword")String oldPassword,
+                                            @RequestParam("password") String password)
+    {
+        final boolean updated = userService.updatePassword(id);
 
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)
@@ -71,8 +74,8 @@ public class UserController {
 
     // Изменение роли пользователя
     @PutMapping(value = "/users/{id}/set-role")
-    public ResponseEntity<?> update(@PathVariable(name="id") UUID id, Set<Role> role){
-        final boolean updated = userService.changeRole(id);
+    public ResponseEntity<?> updateRole(@PathVariable(name="id") UUID id, Set<Role> role){
+        final boolean updated = userService.updateRole(id);
 
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)

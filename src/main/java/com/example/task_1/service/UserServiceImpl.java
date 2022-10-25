@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean changePassword(UUID id){
+    public boolean updatePassword(UUID id){
         if(userRepository.existsById(id)){
 
             return true;
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean changeRole(UUID id){
+    public boolean updateRole(UUID id){
         if(userRepository.existsById(id)){
             return true;
         }

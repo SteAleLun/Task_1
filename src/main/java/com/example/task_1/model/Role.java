@@ -1,6 +1,8 @@
 package com.example.task_1.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 import java.util.UUID;
 
@@ -14,6 +16,8 @@ public class Role {
     private UUID id;
 
     @Column(name = "name")
+    @NotNull
+    @NotEmpty
     private String name;
 
     @Column(name = "description")

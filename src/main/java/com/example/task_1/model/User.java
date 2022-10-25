@@ -1,6 +1,10 @@
 package com.example.task_1.model;
 
+import com.example.task_1.config.ValidEmail;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.util.Set;
@@ -22,18 +26,29 @@ public class User {
 
     @Column(name ="email")
     //@Size(min = )
+    @ValidEmail
+    @NotNull
+    @NotEmpty
     private String email;
 
     @Column(name ="familyName")
+    @NotNull
+    @NotEmpty
     private String familyName;
 
     @Column(name ="name")
+    @NotNull
+    @NotEmpty
     private String name;
 
     @Column(name ="middleName")
+    @NotNull
+    @NotEmpty
     private String middleName;
 
     @Column(name ="password")
+    @NotNull
+    @NotEmpty
     private String password;
 
     @Transient
@@ -43,6 +58,8 @@ public class User {
     private Set<Role> roles;
 
     @Column(name ="createdAt")
+    @NotNull
+    @NotEmpty
     private Timestamp createdAt;
 
     public User(){

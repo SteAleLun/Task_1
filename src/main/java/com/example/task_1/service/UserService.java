@@ -42,7 +42,7 @@ public interface UserService {
      * @param id - id пользователя, пароль которого нужно обновить
      * @return - true если данные были обновлены, иначе false
      */
-    boolean changePassword(UUID id);
+    boolean updatePassword(UUID id);
 
     /**
      * Изменение роли пользователя с заданным ID,
@@ -50,7 +50,7 @@ public interface UserService {
      * @param id - id пользователя, пароль которого нужно обновить
      * @return - true если данные были обновлены, иначе false
      */
-    boolean changeRole(UUID id);
+    boolean updateRole(UUID id);
 
 
     /**
