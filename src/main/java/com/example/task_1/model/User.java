@@ -1,17 +1,18 @@
 package com.example.task_1.model;
 
+import com.example.task_1.config.PasswordMatches;
 import com.example.task_1.config.ValidEmail;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(name ="users")
+@PasswordMatches
 public class User {
 
     @ElementCollection(targetClass = Status.class, fetch = FetchType.LAZY)
@@ -51,8 +52,7 @@ public class User {
     @NotEmpty
     private String password;
 
-    @Transient
-    String passwordConfirm;
+    private String matchingPassword;
 
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Role> roles;
@@ -113,12 +113,12 @@ public class User {
         this.password = password;
     }
 
-    public String getPasswordConfirm() {
-        return passwordConfirm;
+    public String getMatchingPassword() {
+        return matchingPassword;
     }
 
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
+    public void setMatchingPassword(String matchingPassword) {
+        this.matchingPassword = matchingPassword;
     }
 
     public Set<Role> getRoles() {
