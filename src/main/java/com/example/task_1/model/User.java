@@ -1,19 +1,27 @@
 package com.example.task_1.model;
 
 import javax.persistence.*;
-import javax.xml.crypto.Data;
+import javax.validation.constraints.Size;
+import java.sql.Timestamp;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(name ="users")
 public class User {
+
+    @ElementCollection(targetClass = Status.class, fetch = FetchType.LAZY)
+    @CollectionTable(name = "work_state", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Status> statuses;
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @Column(name ="email")
+    //@Size(min = )
     private String email;
 
     @Column(name ="familyName")
@@ -25,17 +33,17 @@ public class User {
     @Column(name ="middleName")
     private String middleName;
 
-    @Column(name ="role")
-    private UUID role;
-
     @Column(name ="password")
     private String password;
+
+    @Transient
+    String passwordConfirm;
 
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Role> roles;
 
-    //private Enum<Status> status;
-    //private Data createdAt;
+    @Column(name ="createdAt")
+    private Timestamp createdAt;
 
     public User(){
     }
@@ -80,20 +88,20 @@ public class User {
         this.middleName = middleName;
     }
 
-    public UUID getRole() {
-        return role;
-    }
-
-    public void setRole(UUID role) {
-        this.role = role;
-    }
-
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 
     public Set<Role> getRoles() {
@@ -104,17 +112,19 @@ public class User {
         this.roles = roles;
     }
 
-    /*public Enum<Status> getStatus() {
-        return status;
+    public Set<Status> getStatuses() {
+        return statuses;
     }
-    public void setStatus(Enum<Status> status) {
-        this.status = status;
+
+    public void setStatuses(Set<Status> statuses) {
+        this.statuses = statuses;
     }
-    public Data getCreatedAt() {
+
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
-    public void setCreatedAt(Data createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
-    }*/
+    }
 
 }

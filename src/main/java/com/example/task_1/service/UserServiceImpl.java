@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean update(User user, UUID id) {
+    public boolean update(UUID id, User user) {
         if (userRepository.existsById(id)){
             user.setId(id);
             userRepository.save(user);
@@ -44,9 +44,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean changePassword(UUID id){
         if(userRepository.existsById(id)){
-            userRepository.getReferenceById(id).setPassword(
-                    (bCryptPasswordEncoder.encode(userRepository.getReferenceById(id).getPassword()))
-            );
+
+            return true;
         }
         return false;
     }
@@ -54,9 +53,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean changeRole(UUID id){
         if(userRepository.existsById(id)){
-            userRepository.getReferenceById(id).setRole(
-                    (userRepository.getReferenceById(id).getRole())
-            );
+            return true;
         }
         return false;
     }

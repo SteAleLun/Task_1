@@ -34,7 +34,7 @@ public interface UserService {
      * @return - true если данные были обновлены, иначе false
      */
 
-    boolean update(User user, UUID id);
+    boolean update(UUID id, User user);
 
     /**
      * Изменение пароля пользователя с заданным ID,

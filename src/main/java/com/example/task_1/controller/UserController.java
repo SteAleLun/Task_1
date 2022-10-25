@@ -1,5 +1,6 @@
 package com.example.task_1.controller;
 
+import com.example.task_1.model.Role;
 import com.example.task_1.model.User;
 import com.example.task_1.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -50,7 +52,7 @@ public class UserController {
     // Обновить пользователя
     @PutMapping(value = "/users/{id}")
     public ResponseEntity<?> update(@PathVariable(name="id") UUID id, @RequestBody User user){
-        final boolean updated = userService.update(user, id);
+        final boolean updated = userService.update(id, user);
 
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)
@@ -59,7 +61,7 @@ public class UserController {
 
     // Изменение пароля пользователя
     @PutMapping(value = "/users/{id}/set-password")
-    public ResponseEntity<?> update(@PathVariable(name="id") UUID id, @RequstBody){
+    public ResponseEntity<?> update(@PathVariable(name="id") UUID id, String password){
         final boolean updated = userService.changePassword(id);
 
         return updated
@@ -69,7 +71,7 @@ public class UserController {
 
     // Изменение роли пользователя
     @PutMapping(value = "/users/{id}/set-role")
-    public ResponseEntity<?> update(@PathVariable(name="id") UUID id){
+    public ResponseEntity<?> update(@PathVariable(name="id") UUID id, Set<Role> role){
         final boolean updated = userService.changeRole(id);
 
         return updated
