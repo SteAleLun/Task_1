@@ -43,7 +43,7 @@ public interface UserService {
      * @param id - id пользователя, пароль которого нужно обновить
      * @return - true если данные были обновлены, иначе false
      */
-    boolean updatePassword(UUID id);
+    boolean updatePassword(UUID id, User user, String oldPassword, String password);
 
     /**
      * Изменение роли пользователя с заданным ID,

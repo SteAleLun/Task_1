@@ -1,5 +1,5 @@
 
-CREATE TYPE work_state AS ENUM ('ACTIVE', 'INACTIVE');
+/*CREATE TYPE work_state AS ENUM ('ACTIVE', 'INACTIVE');
 
 CREATE TABLE IF NOT EXISTS users
 (
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS employee
     middleName VARCHAR(200) ,
     role UUID NOT NULL ,
     password VARCHAR(254) NOT NULL
-);
+);*/
 
 
 

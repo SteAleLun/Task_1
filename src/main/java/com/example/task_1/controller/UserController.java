@@ -84,10 +84,11 @@ public class UserController {
     // Изменение пароля пользователя
     @PutMapping(value = "/users/{id}/set-password")
     public ResponseEntity<?> updatePassword(@PathVariable(name="id") UUID id,
+                                            User user,
                                             @RequestParam("oldPassword")String oldPassword,
                                             @RequestParam("password") String password)
     {
-        final boolean updated = userService.updatePassword(id);
+        final boolean updated = userService.updatePassword(id, user, oldPassword, password);
 
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)
