@@ -1,5 +1,6 @@
 package com.example.task_1.controller;
 
+import com.example.task_1.Exceptions.UserAlreadyExistException;
 import com.example.task_1.model.Role;
 import com.example.task_1.model.User;
 import com.example.task_1.service.UserService;
@@ -19,6 +20,8 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
+
+    private ModelAndView mav;
 
     @Autowired
     public UserController(UserService userService) {

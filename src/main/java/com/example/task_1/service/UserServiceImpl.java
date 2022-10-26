@@ -1,5 +1,6 @@
 package com.example.task_1.service;
 
+import com.example.task_1.Exceptions.UserAlreadyExistException;
 import com.example.task_1.model.User;
 import com.example.task_1.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ public class UserServiceImpl implements UserService {
 
     private boolean emailExists(String email) {
         return userRepository.findByEmail(email) != null;
+
     }
 
     @Override

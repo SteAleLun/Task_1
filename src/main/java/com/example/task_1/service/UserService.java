@@ -1,5 +1,6 @@
 package com.example.task_1.service;
 
+import com.example.task_1.Exceptions.UserAlreadyExistException;
 import com.example.task_1.model.User;
 
 import java.util.List;
@@ -11,8 +12,6 @@ public interface UserService {
      * @param user - пользователь для создания
      */
     void create(User user);
-
-    User registerNewAccount(User user);
 
     /**
      * Возвращает список всех имеющихся пользователей
@@ -61,4 +60,6 @@ public interface UserService {
      * @return - true если пользователь был удален, иначе false
      */
     boolean delete(UUID id);
+
+    User registerNewUserAccount(User user) throws UserAlreadyExistException;
 }
