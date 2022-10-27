@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -144,4 +145,37 @@ public class User {
         this.createdAt = createdAt;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return statuses.equals(user.statuses) && id.equals(user.id)
+                && email.equals(user.email) && familyName.equals(user.familyName)
+                && name.equals(user.name) && middleName.equals(user.middleName)
+                && password.equals(user.password) && matchingPassword.equals(user.matchingPassword)
+                && roles.equals(user.roles) && createdAt.equals(user.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(statuses, id, email, familyName,
+                name, middleName, password, matchingPassword, roles, createdAt);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "statuses=" + statuses +
+                ", id=" + id +
+                ", email='" + email + '\'' +
+                ", familyName='" + familyName + '\'' +
+                ", name='" + name + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", password='" + password + '\'' +
+                ", matchingPassword='" + matchingPassword + '\'' +
+                ", roles=" + roles +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }

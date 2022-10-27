@@ -28,7 +28,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    // Проверка, что юзер с таким email отсутствует в базе
+    // Создание пользователя с валидацией
     @PostMapping("/users/registration")
     public ModelAndView registerUserAccount(
           @ModelAttribute("user") @Valid User user,
