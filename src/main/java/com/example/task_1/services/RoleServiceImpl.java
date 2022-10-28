@@ -1,7 +1,7 @@
-package com.example.task_1.service;
+package com.example.task_1.services;
 
-import com.example.task_1.model.Role;
-import com.example.task_1.repository.RoleRepository;
+import com.example.task_1.entities.RoleEntity;
+import com.example.task_1.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,28 +11,32 @@ import java.util.*;
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-    @Override
-    public void create(Role role) {
-        roleRepository.save(role);
+    public RoleServiceImpl(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
     }
 
     @Override
-    public List<Role> readAll() {
+    public void create(RoleEntity roleEntity) {
+        roleRepository.save(roleEntity);
+    }
+
+    @Override
+    public List<RoleEntity> readAll() {
         return roleRepository.findAll();
     }
 
     @Override
-    public Role read(UUID id) {
+    public RoleEntity read(UUID id) {
         return roleRepository.getReferenceById(id);
     }
 
     @Override
-    public boolean update(Role role, UUID id) {
+    public boolean update(RoleEntity roleEntity, UUID id) {
         if (roleRepository.existsById(id)) {
-            role.setId(id);
-            roleRepository.save(role);
+            roleEntity.setId(id);
+            roleRepository.save(roleEntity);
             return true;
         }
         return false;

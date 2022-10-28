@@ -1,17 +1,15 @@
-package com.example.task_1.controller;
+package com.example.task_1.controllers;
 
-import com.example.task_1.Exceptions.UserAlreadyExistException;
-import com.example.task_1.model.Role;
-import com.example.task_1.model.User;
-import com.example.task_1.service.UserService;
+
+import com.example.task_1.dto.UserDTO;
+import com.example.task_1.entities.RoleEntity;
+import com.example.task_1.entities.UserEntity;
+import com.example.task_1.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -21,60 +19,42 @@ public class UserController {
 
     private final UserService userService;
 
-    private ModelAndView mav;
-
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    // Создание пользователя с валидацией
-    @PostMapping("/users/registration")
-    public ModelAndView registerUserAccount(
-          @ModelAttribute("user") @Valid User user,
-          HttpServletRequest request,
-          Error errors){
-        try {
-            User registered = userService.registerNewUserAccount(user);
-        } catch (UserAlreadyExistException uaeEx) {
-            mav.addObject("message", "An account for that username/email already exists.");
-            return mav;
-        }
-
-        return new ModelAndView("successRegister", "user", user);
-    }
-
     // Создание пользователя
     @PostMapping(value = "/users")
-    public ResponseEntity<?> create(@RequestBody User user){
-        userService.create(user);
+    public ResponseEntity<?> create(@RequestBody UserEntity userEntity){
+        userService.create(userEntity);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     // Получение списка всех пользователей
     @GetMapping(value ="/users")
-    public ResponseEntity<List<User>> read(){
-        final List<User> users = userService.readAll();
+    public ResponseEntity<List<UserDTO>> read(){
+        final List<UserDTO> userDTOS = userService.readAll();
 
-        return users != null && !users.isEmpty()
-                ? new ResponseEntity<>(users, HttpStatus.OK)
+        return userDTOS != null && !userDTOS.isEmpty()
+                ? new ResponseEntity<>(userDTOS, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     // Получение пользователя по id
     @GetMapping(value ="/users/{id}")
-    public ResponseEntity<User> read(@PathVariable(name="id") UUID id){
-        final User user = userService.read(id);
+    public ResponseEntity<UserDTO> read(@PathVariable(name="id") UUID id){
+        final UserDTO userDTO = userService.read(id);
 
-        return user != null
-                ? new ResponseEntity<>(user, HttpStatus.OK)
+        return userDTO != null
+                ? new ResponseEntity<>(userDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    // Обновить пользователя
+    // Изменить пользователя
     @PutMapping(value = "/users/{id}")
-    public ResponseEntity<?> update(@PathVariable(name="id") UUID id, @RequestBody User user){
-        final boolean updated = userService.update(id, user);
+    public ResponseEntity<?> update(@PathVariable(name="id") UUID id, @RequestBody UserEntity userEntity){
+        final boolean updated = userService.update(id, userEntity);
 
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)
@@ -84,11 +64,11 @@ public class UserController {
     // Изменение пароля пользователя
     @PutMapping(value = "/users/{id}/set-password")
     public ResponseEntity<?> updatePassword(@PathVariable(name="id") UUID id,
-                                            User user,
+                                            UserEntity userEntity,
                                             @RequestParam("oldPassword")String oldPassword,
                                             @RequestParam("password") String password)
     {
-        final boolean updated = userService.updatePassword(id, user, oldPassword, password);
+        final boolean updated = userService.updatePassword(id, userEntity, oldPassword, password);
 
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)
@@ -97,7 +77,7 @@ public class UserController {
 
     // Изменение роли пользователя
     @PutMapping(value = "/users/{id}/set-role")
-    public ResponseEntity<?> updateRole(@PathVariable(name="id") UUID id, Set<Role> role){
+    public ResponseEntity<?> updateRole(@PathVariable(name="id") UUID id, Set<RoleEntity> roleEntity){
         final boolean updated = userService.updateRole(id);
 
         return updated

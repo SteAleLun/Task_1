@@ -1,7 +1,4 @@
-package com.example.task_1.model;
-
-import com.example.task_1.config.PasswordMatches;
-import com.example.task_1.config.ValidEmail;
+package com.example.task_1.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -13,13 +10,10 @@ import java.util.UUID;
 
 @Entity
 @Table(name ="users")
-@PasswordMatches
-public class User {
+public class UserEntity {
 
-    @ElementCollection(targetClass = Status.class, fetch = FetchType.LAZY)
-    @CollectionTable(name = "work_state", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Status> statuses;
+    private Status status;
 
     @Id
     @Column(name = "id")
@@ -27,8 +21,6 @@ public class User {
     private UUID id;
 
     @Column(name ="email")
-    //@Size(min = )
-    @ValidEmail
     @NotNull
     @NotEmpty
     private String email;
@@ -53,17 +45,23 @@ public class User {
     @NotEmpty
     private String password;
 
-    private String matchingPassword;
-
     @ManyToMany(fetch = FetchType.LAZY)
-    private Set<Role> roles;
+    private Set<RoleEntity> role;
 
     @Column(name ="createdAt")
     @NotNull
     @NotEmpty
     private Timestamp createdAt;
 
-    public User(){
+    public UserEntity(){
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public UUID getId() {
@@ -114,33 +112,18 @@ public class User {
         this.password = password;
     }
 
-    public String getMatchingPassword() {
-        return matchingPassword;
+    public Set<RoleEntity> getRole() {
+        return role;
     }
 
-    public void setMatchingPassword(String matchingPassword) {
-        this.matchingPassword = matchingPassword;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public Set<Status> getStatuses() {
-        return statuses;
-    }
-
-    public void setStatuses(Set<Status> statuses) {
-        this.statuses = statuses;
+    public void setRole(Set<RoleEntity> roleEntities) {
+        this.role = roleEntities;
     }
 
     public Timestamp getCreatedAt() {
         return createdAt;
     }
+
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
@@ -149,32 +132,45 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return statuses.equals(user.statuses) && id.equals(user.id)
-                && email.equals(user.email) && familyName.equals(user.familyName)
-                && name.equals(user.name) && middleName.equals(user.middleName)
-                && password.equals(user.password) && matchingPassword.equals(user.matchingPassword)
-                && roles.equals(user.roles) && createdAt.equals(user.createdAt);
+
+        UserEntity userEntity = (UserEntity) o;
+
+        if (status != userEntity.status) return false;
+        if (!Objects.equals(id, userEntity.id)) return false;
+        if (!Objects.equals(email, userEntity.email)) return false;
+        if (!Objects.equals(familyName, userEntity.familyName)) return false;
+        if (!Objects.equals(name, userEntity.name)) return false;
+        if (!Objects.equals(middleName, userEntity.middleName)) return false;
+        if (!Objects.equals(password, userEntity.password)) return false;
+        if (!Objects.equals(role, userEntity.role)) return false;
+        return Objects.equals(createdAt, userEntity.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(statuses, id, email, familyName,
-                name, middleName, password, matchingPassword, roles, createdAt);
+        int result = status != null ? status.hashCode() : 0;
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (familyName != null ? familyName.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "statuses=" + statuses +
+                "status=" + status +
                 ", id=" + id +
                 ", email='" + email + '\'' +
                 ", familyName='" + familyName + '\'' +
                 ", name='" + name + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", password='" + password + '\'' +
-                ", matchingPassword='" + matchingPassword + '\'' +
-                ", roles=" + roles +
+                ", roles=" + role +
                 ", createdAt=" + createdAt +
                 '}';
     }
