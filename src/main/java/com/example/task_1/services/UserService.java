@@ -11,7 +11,7 @@ public interface UserService {
      * Создает нового пользователя
      * @param userEntity - пользователь для создания
      */
-    void create(UserEntity userEntity);
+    void create(UserDTO userDTO);
 
     /**
      * Возвращает список всех имеющихся пользователей

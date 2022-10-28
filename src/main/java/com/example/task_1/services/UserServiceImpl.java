@@ -27,8 +27,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void create(UserEntity userEntity) {
-        userRepository.save(userEntity);
+    public void create(UserDTO userDTO) {
+        userRepository.save(mappingUtils.mapToUserEntity(userDTO));
     }
 
     @Override

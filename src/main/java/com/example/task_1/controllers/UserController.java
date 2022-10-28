@@ -24,10 +24,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    ///////////// DTO тут не нужно переводить(mapping) в Entity????????????????//////////////
+
     // Создание пользователя
     @PostMapping(value = "/users")
-    public ResponseEntity<?> create(@RequestBody UserEntity userEntity){
-        userService.create(userEntity);
+    public ResponseEntity<?> create(@RequestBody UserDTO userDTO){
+        userService.create(userDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

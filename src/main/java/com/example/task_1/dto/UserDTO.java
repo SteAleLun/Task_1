@@ -4,6 +4,7 @@ import com.example.task_1.entities.RoleEntity;
 import com.example.task_1.entities.Status;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
@@ -11,8 +12,6 @@ import java.util.Set;
 import java.util.UUID;
 
 public class UserDTO {
-    @Enumerated(EnumType.STRING)
-    private Status status;
 
     @Id
     @Column(name = "id")
@@ -22,6 +21,7 @@ public class UserDTO {
     @Column(name ="email")
     @NotNull
     @NotEmpty
+    @Email
     private String email;
 
     @Column(name ="familyName")
@@ -39,13 +39,16 @@ public class UserDTO {
     @NotEmpty
     private String middleName;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<RoleEntity> role;
+
     @Column(name ="password")
     @NotNull
     @NotEmpty
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<RoleEntity> role;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @Column(name ="createdAt")
     @NotNull
