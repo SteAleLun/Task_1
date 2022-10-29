@@ -1,6 +1,7 @@
 package com.example.task_1.services;
 
 import com.example.task_1.dto.UserDTO;
+import com.example.task_1.dto.UserSetPasswordDTO;
 import com.example.task_1.entities.UserEntity;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.UUID;
 public interface UserService {
     /**
      * Создает нового пользователя
-     * @param userEntity - пользователь для создания
+     * @param userDTO - пользователь для создания
      */
     void create(UserDTO userDTO);
 
@@ -31,11 +32,11 @@ public interface UserService {
     /**
      * Обновляет пользователя с заданным ID,
      * в соответствии с переданным пользователем
-     * @param userEntity - пользователь в соответсвии с которым нужно обновить данные
+     * @param userDTO - пользователь в соответсвии с которым нужно обновить данные
      * @param id - id пользователя которого нужно обновить
      * @return - true если данные были обновлены, иначе false
      */
-    boolean update(UUID id, UserEntity userEntity);
+    boolean update(UUID id, UserDTO userDTO);
 
     /**
      * Изменение пароля пользователя с заданным ID,
@@ -43,7 +44,7 @@ public interface UserService {
      * @param id - id пользователя, пароль которого нужно обновить
      * @return - true если данные были обновлены, иначе false
      */
-    boolean updatePassword(UUID id, UserEntity userEntity, String oldPassword, String password);
+    boolean updatePassword(UUID id, UserSetPasswordDTO uspDTO);
 
     /**
      * Изменение роли пользователя с заданным ID,

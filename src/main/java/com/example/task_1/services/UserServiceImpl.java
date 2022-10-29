@@ -2,6 +2,7 @@ package com.example.task_1.services;
 
 
 import com.example.task_1.dto.UserDTO;
+import com.example.task_1.dto.UserSetPasswordDTO;
 import com.example.task_1.entities.UserEntity;
 import com.example.task_1.repositories.UserRepository;
 import com.example.task_1.services.utils.MappingUtils;
@@ -24,8 +25,6 @@ public class UserServiceImpl implements UserService {
         this.mappingUtils = mappingUtils;
     }
 
-
-
     @Override
     public void create(UserDTO userDTO) {
         userRepository.save(mappingUtils.mapToUserEntity(userDTO));
@@ -42,35 +41,22 @@ public class UserServiceImpl implements UserService {
     public UserDTO read(UUID id) {
         return mappingUtils.mapToUserDto(
                 userRepository.findById(id)
-                        .orElse(new UserEntity())
+                        .orElse(new UserEntity()) ////убрать?
         );
     }
 
     @Override
-    public boolean update(UUID id, UserEntity userEntity) {
+    public boolean update(UUID id, UserDTO userDTO) {
         if (userRepository.existsById(id)){
-            userEntity.setId(id);
-            userRepository.save(userEntity);
+            userDTO.setId(id);
+            userRepository.save(mappingUtils.mapToUserEntity(userDTO));
         }
         return false;
     }
 
     @Override
-    public boolean updatePassword(UUID id, UserEntity userEntity, String oldPassword, String password){
+    public boolean updatePassword(UUID id, UserSetPasswordDTO uspDTO){
         if(userRepository.existsById(id)){
-            String verification = userEntity.getPassword();
-            if(verification.equals(oldPassword)) {
-                userEntity.setPassword(password);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /////// новый метод изменения пароля
-    public boolean updPassword(UUID id, UserEntity userEntity, String newPassword){
-        if(userRepository.existsById(id)){
-                userEntity.setPassword(newPassword);
                 return true;
             }
         return false;

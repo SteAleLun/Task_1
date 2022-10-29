@@ -24,10 +24,6 @@ public class RoleEntity {
     @Column(name = "description")
     private String description;
 
-    @Transient
-    @ManyToMany(mappedBy = "roleEntities")
-    private Set<UserEntity> userEntities;
-
     public RoleEntity(){
     }
 
@@ -55,14 +51,6 @@ public class RoleEntity {
         this.description = description;
     }
 
-    public Set<UserEntity> getUsers() {
-        return userEntities;
-    }
-
-    public void setUsers(Set<UserEntity> userEntities) {
-        this.userEntities = userEntities;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -72,8 +60,7 @@ public class RoleEntity {
 
         if (!Objects.equals(id, roleEntity.id)) return false;
         if (!Objects.equals(name, roleEntity.name)) return false;
-        if (!Objects.equals(description, roleEntity.description)) return false;
-        return Objects.equals(userEntities, roleEntity.userEntities);
+        return Objects.equals(description, roleEntity.description);
     }
 
     @Override
@@ -81,7 +68,6 @@ public class RoleEntity {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (userEntities != null ? userEntities.hashCode() : 0);
         return result;
     }
 
@@ -91,7 +77,6 @@ public class RoleEntity {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", users=" + userEntities +
                 '}';
     }
 }

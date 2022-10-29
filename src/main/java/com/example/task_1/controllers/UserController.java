@@ -2,8 +2,8 @@ package com.example.task_1.controllers;
 
 
 import com.example.task_1.dto.UserDTO;
+import com.example.task_1.dto.UserSetPasswordDTO;
 import com.example.task_1.entities.RoleEntity;
-import com.example.task_1.entities.UserEntity;
 import com.example.task_1.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,8 @@ public class UserController {
         this.userService = userService;
     }
 
-    ///////////// DTO тут не нужно переводить(mapping) в Entity????????????????//////////////
+    ///////////// DTO тут нужно переводить(mapping) в Entity????????????????//////////////
+    ///////////НЕТ НЕ НУЖНО/////////////////
 
     // Создание пользователя
     @PostMapping(value = "/users")
@@ -55,8 +56,8 @@ public class UserController {
 
     // Изменить пользователя
     @PutMapping(value = "/users/{id}")
-    public ResponseEntity<?> update(@PathVariable(name="id") UUID id, @RequestBody UserEntity userEntity){
-        final boolean updated = userService.update(id, userEntity);
+    public ResponseEntity<?> update(@PathVariable(name="id") UUID id, @RequestBody UserDTO userDTO){
+        final boolean updated = userService.update(id, userDTO);
 
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)
@@ -65,12 +66,9 @@ public class UserController {
 
     // Изменение пароля пользователя
     @PutMapping(value = "/users/{id}/set-password")
-    public ResponseEntity<?> updatePassword(@PathVariable(name="id") UUID id,
-                                            UserEntity userEntity,
-                                            @RequestParam("oldPassword")String oldPassword,
-                                            @RequestParam("password") String password)
+    public ResponseEntity<?> updatePassword(@PathVariable(name="id") UUID id, UserSetPasswordDTO uspDTO)
     {
-        final boolean updated = userService.updatePassword(id, userEntity, oldPassword, password);
+        final boolean updated = userService.updatePassword(id, uspDTO);
 
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)

@@ -2,6 +2,7 @@ package com.example.task_1.dto;
 
 import com.example.task_1.entities.RoleEntity;
 import com.example.task_1.entities.Status;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -48,6 +49,8 @@ public class UserDTO {
     private String password;
 
     @Enumerated(EnumType.STRING)
+    // значение по умолчанию
+    @Value(value = "ACTIVE")
     private Status status;
 
     @Column(name ="createdAt")
