@@ -24,9 +24,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    ///////////// DTO тут нужно переводить(mapping) в Entity????????????????//////////////
-    ///////////НЕТ НЕ НУЖНО/////////////////
-
     // Создание пользователя
     @PostMapping(value = "/users")
     public ResponseEntity<?> create(@RequestBody UserDTO userDTO){

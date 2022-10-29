@@ -1,22 +1,20 @@
 package com.example.task_1.entities;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(name ="users")
 public class UserEntity {
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
-
     @Id
-    @Column(name = "id")
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
@@ -30,7 +28,7 @@ public class UserEntity {
     @NotEmpty
     private String familyName;
 
-    @Column(name ="name")
+    @Column(name ="user_name")
     @NotNull
     @NotEmpty
     private String name;
@@ -40,17 +38,24 @@ public class UserEntity {
     @NotEmpty
     private String middleName;
 
-    @Column(name ="password")
+    @Column(name ="user_password")
     @NotNull
     @NotEmpty
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<RoleEntity> role;
+    @Column(name ="user_role")
+    @NotNull
+    @NotEmpty
+    private UUID role;
+
+    @Column(name ="status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @Column(name ="createdAt")
     @NotNull
     @NotEmpty
+    @CreationTimestamp
     private Timestamp createdAt;
 
     public UserEntity(){
@@ -112,12 +117,12 @@ public class UserEntity {
         this.password = password;
     }
 
-    public Set<RoleEntity> getRole() {
+    public UUID getRole() {
         return role;
     }
 
-    public void setRole(Set<RoleEntity> roleEntities) {
-        this.role = roleEntities;
+    public void setRole(UUID role) {
+        this.role = role;
     }
 
     public Timestamp getCreatedAt() {

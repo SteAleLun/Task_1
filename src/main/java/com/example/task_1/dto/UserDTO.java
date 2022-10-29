@@ -1,7 +1,7 @@
 package com.example.task_1.dto;
 
-import com.example.task_1.entities.RoleEntity;
 import com.example.task_1.entities.Status;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
@@ -9,41 +9,35 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
-import java.util.Set;
 import java.util.UUID;
 
 public class UserDTO {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name ="email")
     @NotNull
     @NotEmpty
     @Email
     private String email;
 
-    @Column(name ="familyName")
     @NotNull
     @NotEmpty
     private String familyName;
 
-    @Column(name ="name")
     @NotNull
     @NotEmpty
     private String name;
 
-    @Column(name ="middleName")
     @NotNull
     @NotEmpty
     private String middleName;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<RoleEntity> role;
+    @NotNull
+    @NotEmpty
+    private UUID role;
 
-    @Column(name ="password")
     @NotNull
     @NotEmpty
     private String password;
@@ -53,9 +47,9 @@ public class UserDTO {
     @Value(value = "ACTIVE")
     private Status status;
 
-    @Column(name ="createdAt")
     @NotNull
     @NotEmpty
+    @CreationTimestamp
     private Timestamp createdAt;
 
     public Status getStatus() {
@@ -114,11 +108,11 @@ public class UserDTO {
         this.password = password;
     }
 
-    public Set<RoleEntity> getRole() {
+    public UUID getRole() {
         return role;
     }
 
-    public void setRole(Set<RoleEntity> role) {
+    public void setRole(UUID role) {
         this.role = role;
     }
 

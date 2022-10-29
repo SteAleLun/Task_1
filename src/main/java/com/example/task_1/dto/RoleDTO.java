@@ -10,16 +10,15 @@ import java.util.UUID;
 
 public class RoleDTO {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "name")
+
     @NotNull
     @NotEmpty
     private String name;
 
-    @Column(name = "description")
+
     private String description;
 
 
