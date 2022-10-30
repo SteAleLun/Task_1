@@ -4,13 +4,13 @@ CREATE TABLE IF NOT EXISTS users
 (
     user_id UUID PRIMARY KEY ,
     email VARCHAR(254) NOT NULL ,
-    familyName VARCHAR(200) NOT NULL ,
+    family_name VARCHAR(200) NOT NULL ,
     user_name VARCHAR(200) NOT NULL ,
-    middleName VARCHAR(200) ,
+    middle_name VARCHAR(200) ,
     user_role UUID NOT NULL ,
     user_password VARCHAR(254) NOT NULL,
-    status VARCHAR(8) NOT NULL,
-    createdAt TIMESTAMP NOT NULL
+    status VARCHAR(32) NOT NULL,
+    created_at TIMESTAMP NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS roles

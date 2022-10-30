@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -26,7 +27,7 @@ public class UserController {
 
     // Создание пользователя
     @PostMapping(value = "/users")
-    public ResponseEntity<?> create(@RequestBody UserDTO userDTO){
+    public ResponseEntity<?> create(@Valid @RequestBody UserDTO userDTO){
         userService.create(userDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

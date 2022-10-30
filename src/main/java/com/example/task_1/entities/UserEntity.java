@@ -1,6 +1,7 @@
 package com.example.task_1.entities;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -23,7 +24,7 @@ public class UserEntity {
     @NotEmpty
     private String email;
 
-    @Column(name ="familyName")
+    @Column(name ="family_name")
     @NotNull
     @NotEmpty
     private String familyName;
@@ -33,7 +34,7 @@ public class UserEntity {
     @NotEmpty
     private String name;
 
-    @Column(name ="middleName")
+    @Column(name ="middle_name")
     @NotNull
     @NotEmpty
     private String middleName;
@@ -45,16 +46,13 @@ public class UserEntity {
 
     @Column(name ="user_role")
     @NotNull
-    @NotEmpty
     private UUID role;
 
-    @Column(name ="status")
-    @Enumerated(EnumType.STRING)
-    private Status status;
+    @Column(name ="status", length = 32, columnDefinition = "varchar(32) default 'ACTIVE'")
+    @Enumerated(value = EnumType.STRING)
+    private Status status = Status.ACTIVE;
 
-    @Column(name ="createdAt")
-    @NotNull
-    @NotEmpty
+    @Column(name ="created_at")
     @CreationTimestamp
     private Timestamp createdAt;
 

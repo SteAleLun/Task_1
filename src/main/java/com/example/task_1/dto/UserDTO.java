@@ -2,7 +2,6 @@ package com.example.task_1.dto;
 
 import com.example.task_1.entities.Status;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -18,7 +17,7 @@ public class UserDTO {
     private UUID id;
 
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Поле \"email\"является обязательным для заполнения")
     @Email
     private String email;
 
@@ -35,20 +34,17 @@ public class UserDTO {
     private String middleName;
 
     @NotNull
-    @NotEmpty
     private UUID role;
 
     @NotNull
     @NotEmpty
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    // значение по умолчанию
-    @Value(value = "ACTIVE")
-    private Status status;
 
-    @NotNull
-    @NotEmpty
+    @Column(name ="status", length = 32, columnDefinition = "varchar(32) default 'ACTIVE'")
+    @Enumerated(value = EnumType.STRING)
+    private Status status = Status.ACTIVE;
+
     @CreationTimestamp
     private Timestamp createdAt;
 
