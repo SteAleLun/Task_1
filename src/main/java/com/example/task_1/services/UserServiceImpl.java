@@ -49,7 +49,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO update(UUID id, UpdateUserDTO updDTO) {
         if (userRepository.existsById(id)){
-
             UserDTO userDTO = mappingUtils.mapToUserDto(userRepository.
                     findById(id).orElse(new UserEntity()));
 
@@ -64,12 +63,21 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    /// добавить обработку ошибок и хеширование
     @Override
-    public boolean updatePassword(UUID id, UserSetPasswordDTO uspDTO){
+    public UserDTO updatePassword(UUID id, UserSetPasswordDTO uspDTO){
         if(userRepository.existsById(id)){
-                return true;
+            UserDTO userDTO = mappingUtils.mapToUserDto(userRepository.
+                    findById(id).orElse(new UserEntity()));
+            if(Objects.equals(userDTO.getPassword(), uspDTO.getOldPassword())){
+                if(Objects.equals(uspDTO.getNewPassword(), uspDTO.getConfirmNewPassword())) {
+                    userDTO.setPassword(uspDTO.getNewPassword());
+                    userRepository.save(mappingUtils.mapToUserEntity(userDTO));
+                    return userDTO;
+                }
             }
-        return false;
+        }
+        return null;
     }
 
     @Override

@@ -45,7 +45,7 @@ public interface UserService {
      * @param id - id пользователя, пароль которого нужно обновить
      * @return - true если данные были обновлены, иначе false
      */
-    boolean updatePassword(UUID id, UserSetPasswordDTO uspDTO);
+    UserDTO updatePassword(UUID id, UserSetPasswordDTO uspDTO);
 
     /**
      * Изменение роли пользователя с заданным ID,

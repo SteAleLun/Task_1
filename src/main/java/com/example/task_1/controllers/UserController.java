@@ -58,22 +58,18 @@ public class UserController {
 
     // Изменить пользователя
     @PutMapping(value = "/users/{id}")
-    public ResponseEntity<?> update(@PathVariable(name="id") UUID id, @RequestBody UpdateUserDTO updDTO){
+    public ResponseEntity<?> update(@PathVariable(name="id") UUID id,
+                                    @RequestBody UpdateUserDTO updDTO){
         UserDTO userDTO = userService.update(id, updDTO);
-
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
-
     }
 
     // Изменение пароля пользователя
     @PutMapping(value = "/users/{id}/set-password")
-    public ResponseEntity<?> updatePassword(@PathVariable(name="id") UUID id, UserSetPasswordDTO uspDTO)
-    {
-        final boolean updated = userService.updatePassword(id, uspDTO);
-
-        return updated
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    public ResponseEntity<?> updatePassword(@PathVariable(name="id") UUID id,
+                                            @RequestBody UserSetPasswordDTO uspDTO) {
+        UserDTO userDTO = userService.updatePassword(id, uspDTO);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
     // Изменение роли пользователя
