@@ -4,6 +4,8 @@ package com.example.task_1.services;
 import com.example.task_1.dto.UpdateUserDTO;
 import com.example.task_1.dto.UserDTO;
 import com.example.task_1.dto.UserSetPasswordDTO;
+import com.example.task_1.dto.UserSetRoleDTO;
+import com.example.task_1.entities.Status;
 import com.example.task_1.entities.UserEntity;
 import com.example.task_1.repositories.UserRepository;
 import com.example.task_1.services.utils.MappingUtils;
@@ -71,7 +73,9 @@ public class UserServiceImpl implements UserService {
                     findById(id).orElse(new UserEntity()));
             if(Objects.equals(userDTO.getPassword(), uspDTO.getOldPassword())){
                 if(Objects.equals(uspDTO.getNewPassword(), uspDTO.getConfirmNewPassword())) {
+
                     userDTO.setPassword(uspDTO.getNewPassword());
+
                     userRepository.save(mappingUtils.mapToUserEntity(userDTO));
                     return userDTO;
                 }
@@ -81,11 +85,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateRole(UUID id){
+    public UserDTO updateRole(UUID id, UserSetRoleDTO usrDTO){
         if(userRepository.existsById(id)){
-            return true;
+            UserDTO userDTO = mappingUtils.mapToUserDto(userRepository.
+                    findById(id).orElse(new UserEntity()));
+
+            userDTO.setRole(usrDTO.getRole());
+
+            userRepository.save(mappingUtils.mapToUserEntity(userDTO));
+            return userDTO;
         }
-        return false;
+        return null;
+    }
+
+    @Override
+    public UserDTO setState (UUID id, Status state){
+        if(userRepository.existsById(id)){
+            UserDTO userDTO = mappingUtils.mapToUserDto(userRepository.
+                    findById(id).orElse(new UserEntity()));
+
+            userDTO.setStatus(state);
+
+            userRepository.save(mappingUtils.mapToUserEntity(userDTO));
+            return userDTO;
+        }
+        return null;
     }
 
     @Override

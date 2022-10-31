@@ -4,7 +4,9 @@ package com.example.task_1.controllers;
 import com.example.task_1.dto.UpdateUserDTO;
 import com.example.task_1.dto.UserDTO;
 import com.example.task_1.dto.UserSetPasswordDTO;
+import com.example.task_1.dto.UserSetRoleDTO;
 import com.example.task_1.entities.RoleEntity;
+import com.example.task_1.entities.Status;
 import com.example.task_1.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -74,13 +76,20 @@ public class UserController {
 
     // Изменение роли пользователя
     @PutMapping(value = "/users/{id}/set-role")
-    public ResponseEntity<?> updateRole(@PathVariable(name="id") UUID id, Set<RoleEntity> roleEntity){
-        final boolean updated = userService.updateRole(id);
-
-        return updated
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    public ResponseEntity<?> updateRole(@PathVariable(name="id") UUID id,
+                                        @RequestBody UserSetRoleDTO usrDTO){
+        UserDTO userDTO = userService.updateRole(id, usrDTO);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
+
+    // изменение статуса пользователя
+    @PutMapping(value = "/users/{id}/{state}")
+    public ResponseEntity<?> setState(@PathVariable(name="id") UUID id,
+                                      @PathVariable(name="state") Status state){
+        UserDTO userDTO = userService.setState(id, state);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+    }
+
 
     // Удалить пользователя
     @DeleteMapping(value = "users/{id}")
