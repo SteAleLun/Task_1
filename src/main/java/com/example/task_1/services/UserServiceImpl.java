@@ -1,6 +1,7 @@
 package com.example.task_1.services;
 
 
+import com.example.task_1.dto.UpdateUserDTO;
 import com.example.task_1.dto.UserDTO;
 import com.example.task_1.dto.UserSetPasswordDTO;
 import com.example.task_1.entities.UserEntity;
@@ -41,17 +42,26 @@ public class UserServiceImpl implements UserService {
     public UserDTO read(UUID id) {
         return mappingUtils.mapToUserDto(
                 userRepository.findById(id)
-                        .orElse(new UserEntity()) ////убрать?
+                        .orElse(new UserEntity()) //// для чего этот метод здесь нужен?
         );
     }
 
     @Override
-    public boolean update(UUID id, UserDTO userDTO) {
+    public UserDTO update(UUID id, UpdateUserDTO updDTO) {
         if (userRepository.existsById(id)){
-            userDTO.setId(id);
+
+            UserDTO userDTO = mappingUtils.mapToUserDto(userRepository.
+                    findById(id).orElse(new UserEntity()));
+
+            userDTO.setEmail(updDTO.getEmail());
+            userDTO.setFamilyName(updDTO.getFamilyName());
+            userDTO.setName(updDTO.getName());
+            userDTO.setMiddleName(updDTO.getMiddleName());
+
             userRepository.save(mappingUtils.mapToUserEntity(userDTO));
+            return userDTO;
         }
-        return false;
+        return null;
     }
 
     @Override

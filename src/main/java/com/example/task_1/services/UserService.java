@@ -1,5 +1,6 @@
 package com.example.task_1.services;
 
+import com.example.task_1.dto.UpdateUserDTO;
 import com.example.task_1.dto.UserDTO;
 import com.example.task_1.dto.UserSetPasswordDTO;
 import com.example.task_1.entities.UserEntity;
@@ -32,11 +33,11 @@ public interface UserService {
     /**
      * Обновляет пользователя с заданным ID,
      * в соответствии с переданным пользователем
-     * @param userDTO - пользователь в соответсвии с которым нужно обновить данные
+     * @param updDTO - пользователь в соответсвии с которым нужно обновить данные
      * @param id - id пользователя которого нужно обновить
      * @return - true если данные были обновлены, иначе false
      */
-    boolean update(UUID id, UserDTO userDTO);
+    UserDTO update(UUID id, UpdateUserDTO updDTO);
 
     /**
      * Изменение пароля пользователя с заданным ID,

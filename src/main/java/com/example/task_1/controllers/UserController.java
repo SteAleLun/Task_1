@@ -1,6 +1,7 @@
 package com.example.task_1.controllers;
 
 
+import com.example.task_1.dto.UpdateUserDTO;
 import com.example.task_1.dto.UserDTO;
 import com.example.task_1.dto.UserSetPasswordDTO;
 import com.example.task_1.entities.RoleEntity;
@@ -57,12 +58,11 @@ public class UserController {
 
     // Изменить пользователя
     @PutMapping(value = "/users/{id}")
-    public ResponseEntity<?> update(@PathVariable(name="id") UUID id, @RequestBody UserDTO userDTO){
-        final boolean updated = userService.update(id, userDTO);
+    public ResponseEntity<?> update(@PathVariable(name="id") UUID id, @RequestBody UpdateUserDTO updDTO){
+        UserDTO userDTO = userService.update(id, updDTO);
 
-        return updated
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+
     }
 
     // Изменение пароля пользователя
