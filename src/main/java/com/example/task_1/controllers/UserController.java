@@ -6,8 +6,10 @@ import com.example.task_1.dto.UserSetPasswordDTO;
 import com.example.task_1.entities.RoleEntity;
 import com.example.task_1.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,6 +20,7 @@ import java.util.UUID;
 @RestController
 public class UserController {
 
+    @Autowired
     private final UserService userService;
 
     @Autowired
@@ -29,7 +32,7 @@ public class UserController {
     @PostMapping(value = "/users")
     public ResponseEntity<?> create(@Valid @RequestBody UserDTO userDTO){
         userService.create(userDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
     // Получение списка всех пользователей

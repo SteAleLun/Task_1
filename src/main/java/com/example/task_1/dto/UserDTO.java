@@ -1,6 +1,7 @@
 package com.example.task_1.dto;
 
 import com.example.task_1.entities.Status;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -40,13 +41,30 @@ public class UserDTO {
     @NotEmpty
     private String password;
 
-
     @Column(name ="status", length = 32, columnDefinition = "varchar(32) default 'ACTIVE'")
     @Enumerated(value = EnumType.STRING)
     private Status status = Status.ACTIVE;
 
     @CreationTimestamp
     private Timestamp createdAt;
+
+    public UserDTO(){
+    }
+
+    public UserDTO(UUID id, String email,
+                   String familyName, String name, String middleName,
+                   UUID role, String password,
+                   Status status, Timestamp createdAt) {
+        this.id = id;
+        this.email = email;
+        this.familyName = familyName;
+        this.name = name;
+        this.middleName = middleName;
+        this.role = role;
+        this.password = password;
+        this.status = status;
+        this.createdAt = createdAt;
+    }
 
     public Status getStatus() {
         return status;

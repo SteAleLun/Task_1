@@ -59,6 +59,21 @@ public class UserEntity {
     public UserEntity(){
     }
 
+    public UserEntity(UUID id, String email,
+                      String familyName, String name, String middleName,
+                      String password, UUID role,
+                      Status status, Timestamp createdAt) {
+        this.id = id;
+        this.email = email;
+        this.familyName = familyName;
+        this.name = name;
+        this.middleName = middleName;
+        this.password = password;
+        this.role = role;
+        this.status = status;
+        this.createdAt = createdAt;
+    }
+
     public Status getStatus() {
         return status;
     }
