@@ -1,12 +1,11 @@
 package com.example.task_1.dto;
 
 import com.example.task_1.entities.Status;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -18,27 +17,26 @@ public class UserDTO {
     private UUID id;
 
     @NotNull
-    @NotEmpty(message = "Поле \"email\"является обязательным для заполнения")
+    @NotBlank(message = "Поле \"email\"является обязательным для заполнения")
     @Email
     private String email;
 
     @NotNull
-    @NotEmpty
+    @NotBlank
     private String familyName;
 
     @NotNull
-    @NotEmpty
+    @NotBlank
     private String name;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank
     private String middleName;
 
     @NotNull
     private UUID role;
 
     @NotNull
-    @NotEmpty
+    @NotBlank
     private String password;
 
     @Column(name ="status", length = 32, columnDefinition = "varchar(32) default 'ACTIVE'")

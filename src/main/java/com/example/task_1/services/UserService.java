@@ -5,7 +5,6 @@ import com.example.task_1.dto.UserDTO;
 import com.example.task_1.dto.UserSetPasswordDTO;
 import com.example.task_1.dto.UserSetRoleDTO;
 import com.example.task_1.entities.Status;
-import com.example.task_1.entities.UserEntity;
 
 import java.util.List;
 import java.util.UUID;

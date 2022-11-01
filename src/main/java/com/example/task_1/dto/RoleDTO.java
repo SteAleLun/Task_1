@@ -3,6 +3,7 @@ package com.example.task_1.dto;
 import com.example.task_1.entities.UserEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -15,16 +16,16 @@ public class RoleDTO {
 
 
     @NotNull
-    @NotEmpty
+    @NotBlank
     private String name;
 
-
+    @NotBlank
     private String description;
 
 
     /// ???????
     @Transient
-    @ManyToMany(mappedBy = "roleEntities")
+    //@ManyToMany(mappedBy = "roleEntities")
     private Set<UserEntity> userEntities;
 
     public UUID getId() {
