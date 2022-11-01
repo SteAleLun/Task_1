@@ -7,6 +7,7 @@ import com.example.task_1.dto.UserSetPasswordDTO;
 import com.example.task_1.dto.UserSetRoleDTO;
 import com.example.task_1.entities.Status;
 import com.example.task_1.entities.UserEntity;
+import com.example.task_1.exception.UserAlreadyExistException;
 import com.example.task_1.exception.UserNotFoundException;
 import com.example.task_1.repositories.UserRepository;
 import com.example.task_1.services.utils.MappingUtils;
@@ -31,8 +32,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void create(UserDTO userDTO) {
+    public void create(UserDTO userDTO) throws UserAlreadyExistException {
+        if(emailExist(userDTO.getEmail())){
+            throw new UserAlreadyExistException("Пользователь с таким email уже существует: " + userDTO.getEmail());
+        }
         userRepository.save(mappingUtils.mapToUserEntity(userDTO));
+    }
+
+    private boolean emailExist(String email){
+        return userRepository.findByEmail(email) != null;
     }
 
     @Override

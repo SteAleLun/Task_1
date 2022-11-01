@@ -6,6 +6,7 @@ import com.example.task_1.dto.UserDTO;
 import com.example.task_1.dto.UserSetPasswordDTO;
 import com.example.task_1.dto.UserSetRoleDTO;
 import com.example.task_1.entities.Status;
+import com.example.task_1.exception.UserAlreadyExistException;
 import com.example.task_1.exception.UserNotFoundException;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.UUID;
 
 public interface UserService {
 
-    void create(UserDTO userDTO);
+    void create(UserDTO userDTO) throws UserAlreadyExistException;
 
     List<UserDTO> readAll();
 

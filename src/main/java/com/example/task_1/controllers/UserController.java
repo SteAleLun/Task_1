@@ -6,6 +6,7 @@ import com.example.task_1.dto.UserDTO;
 import com.example.task_1.dto.UserSetPasswordDTO;
 import com.example.task_1.dto.UserSetRoleDTO;
 import com.example.task_1.entities.Status;
+import com.example.task_1.exception.UserAlreadyExistException;
 import com.example.task_1.exception.UserNotFoundException;
 import com.example.task_1.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class UserController {
 
     // Создание пользователя
     @PostMapping(value = "/users")
-    public ResponseEntity<?> create(@Valid @RequestBody UserDTO userDTO){
+    public ResponseEntity<?> create(@Valid @RequestBody UserDTO userDTO) throws UserAlreadyExistException {
         userService.create(userDTO);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
 
