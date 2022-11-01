@@ -11,7 +11,7 @@ public class UserSetRoleDTO {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull
+    @NotNull(message = "Поле 'role' является обязательным для заполнения!")
     private UUID role;
 
     public UUID getId() {

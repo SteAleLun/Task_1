@@ -87,7 +87,6 @@ public class UserController {
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
-
     // Удалить пользователя
     @DeleteMapping(value = "users/{id}")
     public ResponseEntity<?> delete(@PathVariable(name = "id") UUID id){

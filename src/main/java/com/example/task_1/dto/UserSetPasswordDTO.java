@@ -11,16 +11,16 @@ public class UserSetPasswordDTO {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "Поле 'oldPassword' является обязательным для заполнения!")
+    @NotEmpty(message = "Поле 'oldPassword' не должно быть пустой строкой!")
     private String oldPassword;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "Поле 'newPassword' является обязательным для заполнения!")
+    @NotEmpty(message = "Поле 'newPassword' не должно быть пустой строкой!")
     private String newPassword;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "Поле 'confirmNewPassword' является обязательным для заполнения!")
+    @NotEmpty(message = "Поле 'confirmNewPassword' не должно быть пустой строкой!")
     private String confirmNewPassword;
 
     public UUID getId() {

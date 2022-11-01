@@ -14,20 +14,20 @@ public class UpdateUserDTO {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull
-    @NotBlank(message = "Поле \"email\"является обязательным для заполнения")
+    @NotNull(message = "Поле 'email' является обязательным для заполнения!")
+    @NotBlank(message = "Поле 'email' не должно быть пустой строкой!")
     @Email
     private String email;
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Поле 'familyName' является обязательным для заполнения!")
+    @NotBlank(message = "Поле 'familyName' не должно быть пустой строкой!")
     private String familyName;
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Поле 'name' является обязательным для заполнения!")
+    @NotBlank(message = "Поле 'name' не должно быть пустой строкой!")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "Поле 'middleName' не должно быть пустой строкой!")
     private String middleName;
 
     public UUID getId() {

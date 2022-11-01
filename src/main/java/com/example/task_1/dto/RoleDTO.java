@@ -25,11 +25,11 @@ public class RoleDTO {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Поле 'name' является обязательным для заполнения!")
+    @NotBlank(message = "Поле 'name' не должно быть пустой строкой!")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "Поле 'description' не должно быть пустой строкой!")
     private String description;
 
     /// ???????

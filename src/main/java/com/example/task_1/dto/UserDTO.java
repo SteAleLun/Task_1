@@ -16,27 +16,27 @@ public class UserDTO {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull
-    @NotBlank(message = "Поле \"email\"является обязательным для заполнения")
+    @NotNull(message = "Поле 'email' является обязательным для заполнения!")
+    @NotBlank(message = "Поле 'email' не должно быть пустой строкой!")
     @Email
     private String email;
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Поле 'familyName' является обязательным для заполнения!")
+    @NotBlank(message = "Поле 'familyName' не должно быть пустой строкой!")
     private String familyName;
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Поле 'name' является обязательным для заполнения!")
+    @NotBlank(message = "Поле 'name' не должно быть пустой строкой!")
     private String name;
 
     @NotBlank
     private String middleName;
 
-    @NotNull
+    @NotNull(message = "Поле 'role' является обязательным для заполнения!")
     private UUID role;
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Поле 'password' является обязательным для заполнения!")
+    @NotBlank(message = "Поле 'password' не должно быть пустой строкой!")
     private String password;
 
     @Column(name ="status", length = 32, columnDefinition = "varchar(32) default 'ACTIVE'")
