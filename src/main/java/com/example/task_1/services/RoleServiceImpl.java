@@ -3,7 +3,8 @@ package com.example.task_1.services;
 import com.example.task_1.dto.RoleDTO;
 import com.example.task_1.dto.UpdateRoleDTO;
 import com.example.task_1.entities.RoleEntity;
-import com.example.task_1.entities.UserEntity;
+import com.example.task_1.exception.RoleNotFoundException;
+import com.example.task_1.exception.UserNotFoundException;
 import com.example.task_1.repositories.RoleRepository;
 import com.example.task_1.services.utils.MappingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,15 +40,16 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleDTO read(UUID id) {
-        return mappingUtils.mapToRoleDto(
-                roleRepository.findById(id)
-                        .orElse(new RoleEntity())
-        );
+    public RoleDTO read(UUID id) throws RoleNotFoundException {
+        if(roleRepository.existsById(id)) {
+            return mappingUtils.mapToRoleDto(roleRepository.findById(id).orElse(new RoleEntity()));
+        } else {
+            throw new RoleNotFoundException("Роль с идентификатором '" + id + "' не найдена!");
+        }
     }
 
     @Override
-    public RoleDTO update(UUID id, UpdateRoleDTO updDTO) {
+    public RoleDTO update(UUID id, UpdateRoleDTO updDTO) throws RoleNotFoundException {
         if (roleRepository.existsById(id)) {
             RoleDTO roleDTO = mappingUtils.mapToRoleDto(roleRepository.
                     findById(id).orElse(new RoleEntity()));
@@ -57,17 +59,19 @@ public class RoleServiceImpl implements RoleService {
 
             roleRepository.save(mappingUtils.mapToRoleEntity(roleDTO));
             return roleDTO;
+        } else {
+            throw new RoleNotFoundException("Роль с идентификатором '" + id + "' не найдена!");
         }
-        return null;
     }
 
     @Override
-    public boolean delete(UUID id) {
+    public boolean delete(UUID id) throws RoleNotFoundException {
         if (roleRepository.existsById(id)) {
             roleRepository.deleteById(id);
             return true;
+        } else {
+            throw new RoleNotFoundException("Роль с идентификатором '" + id + "' не найдена!");
         }
-        return false;
     }
 
 }

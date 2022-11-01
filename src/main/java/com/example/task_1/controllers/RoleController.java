@@ -2,6 +2,7 @@ package com.example.task_1.controllers;
 
 import com.example.task_1.dto.RoleDTO;
 import com.example.task_1.dto.UpdateRoleDTO;
+import com.example.task_1.exception.RoleNotFoundException;
 import com.example.task_1.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,7 @@ public class RoleController {
     }
 
     @GetMapping(value ="/roles/{id}")
-    public ResponseEntity<RoleDTO> read(@PathVariable(name = "id") UUID id){
+    public ResponseEntity<RoleDTO> read(@PathVariable(name = "id") UUID id) throws RoleNotFoundException {
         final RoleDTO roleDTO = roleService.read(id);
 
         return roleDTO != null
@@ -48,13 +49,13 @@ public class RoleController {
 
     @PutMapping(value="/roles/{id}")
     public ResponseEntity<?> update(@PathVariable(name = "id") UUID id,
-                                    @Valid @RequestBody UpdateRoleDTO updDTO){
+                                    @Valid @RequestBody UpdateRoleDTO updDTO) throws RoleNotFoundException {
         RoleDTO roleDTO = roleService.update(id, updDTO);
         return new ResponseEntity<>(roleDTO, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/roles/{id}")
-    public ResponseEntity<?> delete(@PathVariable(name = "id") UUID id){
+    public ResponseEntity<?> delete(@PathVariable(name = "id") UUID id) throws RoleNotFoundException {
         final boolean deleted = roleService.delete(id);
 
         return deleted
