@@ -145,38 +145,6 @@ public class UserEntity {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UserEntity userEntity = (UserEntity) o;
-
-        if (status != userEntity.status) return false;
-        if (!Objects.equals(id, userEntity.id)) return false;
-        if (!Objects.equals(email, userEntity.email)) return false;
-        if (!Objects.equals(familyName, userEntity.familyName)) return false;
-        if (!Objects.equals(name, userEntity.name)) return false;
-        if (!Objects.equals(middleName, userEntity.middleName)) return false;
-        if (!Objects.equals(password, userEntity.password)) return false;
-        if (!Objects.equals(role, userEntity.role)) return false;
-        return Objects.equals(createdAt, userEntity.createdAt);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = status != null ? status.hashCode() : 0;
-        result = 31 * result + (id != null ? id.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (familyName != null ? familyName.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (role != null ? role.hashCode() : 0);
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "User{" +
                 "status=" + status +

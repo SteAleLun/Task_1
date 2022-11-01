@@ -7,6 +7,7 @@ import com.example.task_1.dto.UserSetPasswordDTO;
 import com.example.task_1.dto.UserSetRoleDTO;
 import com.example.task_1.entities.Status;
 import com.example.task_1.entities.UserEntity;
+import com.example.task_1.exception.UserNotFoundException;
 import com.example.task_1.repositories.UserRepository;
 import com.example.task_1.services.utils.MappingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,11 +44,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO read(UUID id) {
-        return mappingUtils.mapToUserDto(
-                userRepository.findById(id)
-                        .orElse(new UserEntity()) //// для чего этот метод здесь нужен?
-        );
+    public UserDTO read(UUID id) throws UserNotFoundException {
+        UserEntity user = userRepository.findById(id).orElse(new UserEntity());
+        if(user.equals(userRepository.findById(id).orElse(new UserEntity()))){
+            return mappingUtils.mapToUserDto(userRepository.findById(id).orElse(new UserEntity()));
+        } else {
+            throw new UserNotFoundException("Пользователь с идентификатором '" + id + "' не найден!");
+        }
     }
 
     @Override

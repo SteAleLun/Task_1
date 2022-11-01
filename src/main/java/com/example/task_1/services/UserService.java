@@ -6,6 +6,7 @@ import com.example.task_1.dto.UserDTO;
 import com.example.task_1.dto.UserSetPasswordDTO;
 import com.example.task_1.dto.UserSetRoleDTO;
 import com.example.task_1.entities.Status;
+import com.example.task_1.exception.UserNotFoundException;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,7 +17,7 @@ public interface UserService {
 
     List<UserDTO> readAll();
 
-    UserDTO read(UUID id);
+    UserDTO read(UUID id) throws UserNotFoundException;
 
     UserDTO update(UUID id, UpdateUserDTO updDTO);
 
