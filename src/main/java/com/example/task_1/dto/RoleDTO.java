@@ -2,18 +2,28 @@ package com.example.task_1.dto;
 
 import com.example.task_1.entities.UserEntity;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 import java.util.UUID;
+
+
+////////////////////////////////////////////////////////////////
+///                         ID ролей:                        ///
+///  "Администратор": bc7de22d-f176-4594-a250-77e580f10aca   ///
+///  "Сотрудник": 16d2745a-c050-4a3d-97bb-9addd96f30eb       ///
+///  "Наблюдатель": cd03925b-1ac9-41d2-955b-b9d98109df4d     ///
+////////////////////////////////////////////////////////////////
+
 
 public class RoleDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-
 
     @NotNull
     @NotBlank
@@ -21,7 +31,6 @@ public class RoleDTO {
 
     @NotBlank
     private String description;
-
 
     /// ???????
     @Transient

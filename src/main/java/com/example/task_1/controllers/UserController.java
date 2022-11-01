@@ -32,6 +32,7 @@ public class UserController {
     public ResponseEntity<?> create(@Valid @RequestBody UserDTO userDTO){
         userService.create(userDTO);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+
     }
 
     // Получение списка всех пользователей
@@ -57,7 +58,7 @@ public class UserController {
     // Изменить пользователя
     @PutMapping(value = "/users/{id}")
     public ResponseEntity<?> update(@PathVariable(name="id") UUID id,
-                                    @RequestBody UpdateUserDTO updDTO){
+                                    @Valid @RequestBody UpdateUserDTO updDTO){
         UserDTO userDTO = userService.update(id, updDTO);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
@@ -65,7 +66,7 @@ public class UserController {
     // Изменение пароля пользователя
     @PutMapping(value = "/users/{id}/set-password")
     public ResponseEntity<?> updatePassword(@PathVariable(name="id") UUID id,
-                                            @RequestBody UserSetPasswordDTO uspDTO) {
+                                            @Valid @RequestBody UserSetPasswordDTO uspDTO) {
         UserDTO userDTO = userService.updatePassword(id, uspDTO);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
@@ -73,7 +74,7 @@ public class UserController {
     // Изменение роли пользователя
     @PutMapping(value = "/users/{id}/set-role")
     public ResponseEntity<?> updateRole(@PathVariable(name="id") UUID id,
-                                        @RequestBody UserSetRoleDTO usrDTO){
+                                        @Valid @RequestBody UserSetRoleDTO usrDTO){
         UserDTO userDTO = userService.updateRole(id, usrDTO);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
@@ -81,7 +82,7 @@ public class UserController {
     // изменение статуса пользователя
     @PutMapping(value = "/users/{id}/{state}")
     public ResponseEntity<?> setState(@PathVariable(name="id") UUID id,
-                                      @PathVariable(name="state") Status state){
+                                      @Valid @PathVariable(name="state") Status state){
         UserDTO userDTO = userService.setState(id, state);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }

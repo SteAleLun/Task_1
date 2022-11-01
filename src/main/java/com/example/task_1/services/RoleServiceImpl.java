@@ -1,11 +1,16 @@
 package com.example.task_1.services;
 
+import com.example.task_1.dto.RoleDTO;
+import com.example.task_1.dto.UpdateRoleDTO;
 import com.example.task_1.entities.RoleEntity;
+import com.example.task_1.entities.UserEntity;
 import com.example.task_1.repositories.RoleRepository;
+import com.example.task_1.services.utils.MappingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -13,33 +18,47 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private final RoleRepository roleRepository;
 
-    public RoleServiceImpl(RoleRepository roleRepository) {
+    private final MappingUtils mappingUtils;
+
+    public RoleServiceImpl(RoleRepository roleRepository, MappingUtils mappingUtils) {
         this.roleRepository = roleRepository;
+        this.mappingUtils = mappingUtils;
     }
 
     @Override
-    public void create(RoleEntity roleEntity) {
-        roleRepository.save(roleEntity);
+    public void create(RoleDTO roleDTO) {
+        roleRepository.save(mappingUtils.mapToRoleEntity(roleDTO));
+    }
+
+    // получить список ролей
+    @Override
+    public List<RoleDTO> readAll() {
+        return roleRepository.findAll().stream()
+                .map(mappingUtils::mapToRoleDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<RoleEntity> readAll() {
-        return roleRepository.findAll();
+    public RoleDTO read(UUID id) {
+        return mappingUtils.mapToRoleDto(
+                roleRepository.findById(id)
+                        .orElse(new RoleEntity())
+        );
     }
 
     @Override
-    public RoleEntity read(UUID id) {
-        return roleRepository.getReferenceById(id);
-    }
-
-    @Override
-    public boolean update(RoleEntity roleEntity, UUID id) {
+    public RoleDTO update(UUID id, UpdateRoleDTO updDTO) {
         if (roleRepository.existsById(id)) {
-            roleEntity.setId(id);
-            roleRepository.save(roleEntity);
-            return true;
+            RoleDTO roleDTO = mappingUtils.mapToRoleDto(roleRepository.
+                    findById(id).orElse(new RoleEntity()));
+
+            roleDTO.setName(updDTO.getName());
+            roleDTO.setDescription(updDTO.getDescription());
+
+            roleRepository.save(mappingUtils.mapToRoleEntity(roleDTO));
+            return roleDTO;
         }
-        return false;
+        return null;
     }
 
     @Override
