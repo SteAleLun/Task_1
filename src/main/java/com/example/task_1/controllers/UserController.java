@@ -59,7 +59,7 @@ public class UserController {
     // Изменить пользователя
     @PutMapping(value = "/users/{id}")
     public ResponseEntity<?> update(@PathVariable(name="id") UUID id,
-                                    @Valid @RequestBody UpdateUserDTO updDTO){
+                                    @Valid @RequestBody UpdateUserDTO updDTO) throws UserNotFoundException {
         UserDTO userDTO = userService.update(id, updDTO);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
@@ -67,7 +67,7 @@ public class UserController {
     // Изменение пароля пользователя
     @PutMapping(value = "/users/{id}/set-password")
     public ResponseEntity<?> updatePassword(@PathVariable(name="id") UUID id,
-                                            @Valid @RequestBody UserSetPasswordDTO uspDTO) {
+                                            @Valid @RequestBody UserSetPasswordDTO uspDTO) throws UserNotFoundException {
         UserDTO userDTO = userService.updatePassword(id, uspDTO);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
@@ -75,7 +75,7 @@ public class UserController {
     // Изменение роли пользователя
     @PutMapping(value = "/users/{id}/set-role")
     public ResponseEntity<?> updateRole(@PathVariable(name="id") UUID id,
-                                        @Valid @RequestBody UserSetRoleDTO usrDTO){
+                                        @Valid @RequestBody UserSetRoleDTO usrDTO) throws UserNotFoundException {
         UserDTO userDTO = userService.updateRole(id, usrDTO);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
@@ -83,14 +83,14 @@ public class UserController {
     // изменение статуса пользователя
     @PutMapping(value = "/users/{id}/{state}")
     public ResponseEntity<?> setState(@PathVariable(name="id") UUID id,
-                                      @Valid @PathVariable(name="state") Status state){
+                                      @Valid @PathVariable(name="state") Status state) throws UserNotFoundException {
         UserDTO userDTO = userService.setState(id, state);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
     // Удалить пользователя
     @DeleteMapping(value = "users/{id}")
-    public ResponseEntity<?> delete(@PathVariable(name = "id") UUID id){
+    public ResponseEntity<?> delete(@PathVariable(name = "id") UUID id) throws UserNotFoundException {
         final boolean deleted = userService.delete(id);
 
         return deleted

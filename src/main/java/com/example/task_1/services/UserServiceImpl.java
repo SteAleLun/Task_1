@@ -11,7 +11,6 @@ import com.example.task_1.exception.UserNotFoundException;
 import com.example.task_1.repositories.UserRepository;
 import com.example.task_1.services.utils.MappingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,8 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO read(UUID id) throws UserNotFoundException {
-        UserEntity user = userRepository.findById(id).orElse(new UserEntity());
-        if(user.equals(userRepository.findById(id).orElse(new UserEntity()))){
+        if(userRepository.existsById(id)){
             return mappingUtils.mapToUserDto(userRepository.findById(id).orElse(new UserEntity()));
         } else {
             throw new UserNotFoundException("Пользователь с идентификатором '" + id + "' не найден!");
@@ -54,7 +52,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO update(UUID id, UpdateUserDTO updDTO) {
+    public UserDTO update(UUID id, UpdateUserDTO updDTO) throws UserNotFoundException {
         if (userRepository.existsById(id)){
             UserDTO userDTO = mappingUtils.mapToUserDto(userRepository.
                     findById(id).orElse(new UserEntity()));
@@ -66,13 +64,14 @@ public class UserServiceImpl implements UserService {
 
             userRepository.save(mappingUtils.mapToUserEntity(userDTO));
             return userDTO;
+        } else {
+            throw new UserNotFoundException("Пользователь с идентификатором '" + id + "' не найден!");
         }
-        return null;
     }
 
     /// добавить обработку ошибок и хеширование
     @Override
-    public UserDTO updatePassword(UUID id, UserSetPasswordDTO uspDTO){
+    public UserDTO updatePassword(UUID id, UserSetPasswordDTO uspDTO) throws UserNotFoundException {
         if(userRepository.existsById(id)){
             UserDTO userDTO = mappingUtils.mapToUserDto(userRepository.
                     findById(id).orElse(new UserEntity()));
@@ -85,12 +84,14 @@ public class UserServiceImpl implements UserService {
                     return userDTO;
                 }
             }
+        } else {
+            throw new UserNotFoundException("Пользователь с идентификатором '" + id + "' не найден!");
         }
         return null;
     }
 
     @Override
-    public UserDTO updateRole(UUID id, UserSetRoleDTO usrDTO){
+    public UserDTO updateRole(UUID id, UserSetRoleDTO usrDTO) throws UserNotFoundException {
         if(userRepository.existsById(id)){
             UserDTO userDTO = mappingUtils.mapToUserDto(userRepository.
                     findById(id).orElse(new UserEntity()));
@@ -99,12 +100,13 @@ public class UserServiceImpl implements UserService {
 
             userRepository.save(mappingUtils.mapToUserEntity(userDTO));
             return userDTO;
+        } else {
+            throw new UserNotFoundException("Пользователь с идентификатором '" + id + "' не найден!");
         }
-        return null;
     }
 
     @Override
-    public UserDTO setState (UUID id, Status state){
+    public UserDTO setState (UUID id, Status state) throws UserNotFoundException {
         if(userRepository.existsById(id)){
             UserDTO userDTO = mappingUtils.mapToUserDto(userRepository.
                     findById(id).orElse(new UserEntity()));
@@ -113,23 +115,19 @@ public class UserServiceImpl implements UserService {
 
             userRepository.save(mappingUtils.mapToUserEntity(userDTO));
             return userDTO;
+        } else {
+            throw new UserNotFoundException("Пользователь с идентификатором '" + id + "' не найден!");
         }
-        return null;
     }
 
     @Override
-    public boolean delete(UUID id) {
+    public boolean delete(UUID id) throws UserNotFoundException {
         if(userRepository.existsById(id)) {
            userRepository.deleteById(id);
            return true;
+        } else {
+            throw new UserNotFoundException("Пользователь с идентификатором '" + id + "' не найден!");
         }
-        return false;
-    }
-
-    //возвращает true или false при поиске в таблице Users объекта который соответствует
-    // типу User или принадлежит к типу объекта который наследуется от User
-    public boolean exist(Example<? extends UserEntity> example){
-        return userRepository.exists(example);
     }
 
 }

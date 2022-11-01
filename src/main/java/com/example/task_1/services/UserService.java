@@ -19,14 +19,14 @@ public interface UserService {
 
     UserDTO read(UUID id) throws UserNotFoundException;
 
-    UserDTO update(UUID id, UpdateUserDTO updDTO);
+    UserDTO update(UUID id, UpdateUserDTO updDTO) throws UserNotFoundException;
 
-    UserDTO updatePassword(UUID id, UserSetPasswordDTO uspDTO);
+    UserDTO updatePassword(UUID id, UserSetPasswordDTO uspDTO) throws UserNotFoundException;
 
-    UserDTO updateRole(UUID id, UserSetRoleDTO usrDTO);
+    UserDTO updateRole(UUID id, UserSetRoleDTO usrDTO) throws UserNotFoundException;
 
-    UserDTO setState(UUID id, Status state);
+    UserDTO setState(UUID id, Status state) throws UserNotFoundException;
 
-    boolean delete(UUID id);
+    boolean delete(UUID id) throws UserNotFoundException;
 
 }
