@@ -6,6 +6,7 @@ import com.example.task_1.dto.UserDTO;
 import com.example.task_1.dto.UserSetPasswordDTO;
 import com.example.task_1.dto.UserSetRoleDTO;
 import com.example.task_1.entities.Status;
+import com.example.task_1.exception.InvalidPasswordException;
 import com.example.task_1.exception.UserAlreadyExistException;
 import com.example.task_1.exception.UserNotFoundException;
 
@@ -22,7 +23,7 @@ public interface UserService {
 
     UserDTO update(UUID id, UpdateUserDTO updDTO) throws UserNotFoundException;
 
-    UserDTO updatePassword(UUID id, UserSetPasswordDTO uspDTO) throws UserNotFoundException;
+    UserDTO updatePassword(UUID id, UserSetPasswordDTO uspDTO) throws UserNotFoundException, InvalidPasswordException;
 
     UserDTO updateRole(UUID id, UserSetRoleDTO usrDTO) throws UserNotFoundException;
 

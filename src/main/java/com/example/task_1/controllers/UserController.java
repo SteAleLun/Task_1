@@ -6,7 +6,7 @@ import com.example.task_1.dto.UserDTO;
 import com.example.task_1.dto.UserSetPasswordDTO;
 import com.example.task_1.dto.UserSetRoleDTO;
 import com.example.task_1.entities.Status;
-import com.example.task_1.entities.UserEntity;
+import com.example.task_1.exception.InvalidPasswordException;
 import com.example.task_1.exception.UserAlreadyExistException;
 import com.example.task_1.exception.UserNotFoundException;
 import com.example.task_1.services.UserService;
@@ -66,15 +66,15 @@ public class UserController {
     }
 
     // Изменение пароля пользователя
-    @PutMapping(value = "/users/{id}/set-password")
+    @PostMapping(value = "/users/{id}/set-password")
     public ResponseEntity<?> updatePassword(@PathVariable(name="id") UUID id,
-                                            @Valid @RequestBody UserSetPasswordDTO uspDTO) throws UserNotFoundException {
+                                            @Valid @RequestBody UserSetPasswordDTO uspDTO) throws UserNotFoundException, InvalidPasswordException {
         UserDTO userDTO = userService.updatePassword(id, uspDTO);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
     // Изменение роли пользователя
-    @PutMapping(value = "/users/{id}/set-role")
+    @PostMapping(value = "/users/{id}/set-role")
     public ResponseEntity<?> updateRole(@PathVariable(name="id") UUID id,
                                         @Valid @RequestBody UserSetRoleDTO usrDTO) throws UserNotFoundException {
         UserDTO userDTO = userService.updateRole(id, usrDTO);
@@ -82,7 +82,7 @@ public class UserController {
     }
 
     // изменение статуса пользователя
-    @PutMapping(value = "/users/{id}/{state}")
+    @PostMapping(value = "/users/{id}/{state}")
     public ResponseEntity<?> setState(@PathVariable(name="id") UUID id,
                                       @Valid @PathVariable(name="state") Status state) throws UserNotFoundException {
         UserDTO userDTO = userService.setState(id, state);

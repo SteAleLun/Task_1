@@ -1,5 +1,6 @@
 package com.example.task_1.advice;
 
+import com.example.task_1.exception.InvalidPasswordException;
 import com.example.task_1.exception.RoleNotFoundException;
 import com.example.task_1.exception.UserAlreadyExistException;
 import com.example.task_1.exception.UserNotFoundException;
@@ -45,6 +46,14 @@ public class AppExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(UserAlreadyExistException.class)
     public Map<String, String> UserAlreadyExistExceptionHandle(UserAlreadyExistException exception){
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", exception.getMessage());
+        return errorMap;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidPasswordException.class)
+    public Map<String, String> InvalidPasswordExceptionHandle(InvalidPasswordException exception){
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("errorMessage", exception.getMessage());
         return errorMap;

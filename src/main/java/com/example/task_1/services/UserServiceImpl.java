@@ -7,6 +7,7 @@ import com.example.task_1.dto.UserSetPasswordDTO;
 import com.example.task_1.dto.UserSetRoleDTO;
 import com.example.task_1.entities.Status;
 import com.example.task_1.entities.UserEntity;
+import com.example.task_1.exception.InvalidPasswordException;
 import com.example.task_1.exception.UserAlreadyExistException;
 import com.example.task_1.exception.UserNotFoundException;
 import com.example.task_1.repositories.UserRepository;
@@ -85,25 +86,28 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    /// добавить обработку ошибок и хеширование
     @Override
-    public UserDTO updatePassword(UUID id, UserSetPasswordDTO uspDTO) throws UserNotFoundException {
+    public UserDTO updatePassword(UUID id, UserSetPasswordDTO uspDTO) throws UserNotFoundException, InvalidPasswordException {
         if(userRepository.existsById(id)){
             UserDTO userDTO = mappingUtils.mapToUserDto(userRepository.
                     findById(id).orElse(new UserEntity()));
-            if(Objects.equals(userDTO.getPassword(), uspDTO.getOldPassword())){
-                if(Objects.equals(uspDTO.getNewPassword(), uspDTO.getConfirmNewPassword())) {
+            if(passwordEncoder.matches(uspDTO.getOldPassword(), userDTO.getPassword())) {
+                if(Objects.equals( uspDTO.getNewPassword(),
+                                   uspDTO.getConfirmNewPassword() )) {
 
-                    userDTO.setPassword(uspDTO.getNewPassword());
+                    userDTO.setPassword(passwordEncoder.encode( uspDTO.getNewPassword() ));
 
-                    userRepository.save(mappingUtils.mapToUserEntity(userDTO)); // лишний мапинг
+                    userRepository.save(mappingUtils.mapToUserEntity(userDTO));
                     return userDTO;
+                } else {
+                    throw new InvalidPasswordException("Ошибка при подтверждении нового пароля. Пароли не совпадают!");
                 }
+            } else {
+                throw new InvalidPasswordException("Неверно указан старый пароль!");
             }
         } else {
             throw new UserNotFoundException("Пользователь с идентификатором '" + id + "' не найден!");
         }
-        return null;
     }
 
     @Override
