@@ -12,6 +12,7 @@ import com.example.task_1.exception.UserNotFoundException;
 import com.example.task_1.repositories.UserRepository;
 import com.example.task_1.services.utils.MappingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +25,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private final UserRepository userRepository;
+
+    @Autowired
     private final MappingUtils mappingUtils;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository, MappingUtils mappingUtils) {
         this.userRepository = userRepository;
@@ -36,7 +42,9 @@ public class UserServiceImpl implements UserService {
         if(emailExist(userDTO.getEmail())){
             throw new UserAlreadyExistException("Пользователь с таким email уже существует: " + userDTO.getEmail());
         }
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword())); // с этой строкой всё в порядке?
         userRepository.save(mappingUtils.mapToUserEntity(userDTO));
+        // читать из базы заново read()
     }
 
     private boolean emailExist(String email){
@@ -88,7 +96,7 @@ public class UserServiceImpl implements UserService {
 
                     userDTO.setPassword(uspDTO.getNewPassword());
 
-                    userRepository.save(mappingUtils.mapToUserEntity(userDTO));
+                    userRepository.save(mappingUtils.mapToUserEntity(userDTO)); // лишний мапинг
                     return userDTO;
                 }
             }
@@ -106,7 +114,7 @@ public class UserServiceImpl implements UserService {
 
             userDTO.setRole(usrDTO.getRole());
 
-            userRepository.save(mappingUtils.mapToUserEntity(userDTO));
+            userRepository.save(mappingUtils.mapToUserEntity(userDTO)); // лишнее
             return userDTO;
         } else {
             throw new UserNotFoundException("Пользователь с идентификатором '" + id + "' не найден!");
@@ -121,7 +129,7 @@ public class UserServiceImpl implements UserService {
 
             userDTO.setStatus(state);
 
-            userRepository.save(mappingUtils.mapToUserEntity(userDTO));
+            userRepository.save(mappingUtils.mapToUserEntity(userDTO)); // лишнее
             return userDTO;
         } else {
             throw new UserNotFoundException("Пользователь с идентификатором '" + id + "' не найден!");

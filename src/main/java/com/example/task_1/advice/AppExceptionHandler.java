@@ -25,6 +25,7 @@ public class AppExceptionHandler {
         });
         return errorMap;
     }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(UserNotFoundException.class)
     public Map<String, String> UserNotFoundExceptionHandle(UserNotFoundException exception){
@@ -48,4 +49,5 @@ public class AppExceptionHandler {
         errorMap.put("errorMessage", exception.getMessage());
         return errorMap;
     }
+
 }

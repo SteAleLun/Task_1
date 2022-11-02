@@ -1,6 +1,9 @@
 package com.example.task_1.dto;
 
 import com.example.task_1.entities.Status;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -14,6 +17,7 @@ public class UserDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonRawValue
     private UUID id;
 
     @NotNull(message = "Поле 'email' является обязательным для заполнения!")
@@ -44,6 +48,9 @@ public class UserDTO {
     private Status status = Status.ACTIVE;
 
     @CreationTimestamp
+    @JsonFormat(
+            shape = JsonFormat.Shape.STRING,
+            pattern = "dd-MM-yyyy hh:mm:ss")
     private Timestamp createdAt;
 
     public UserDTO(){

@@ -6,6 +6,7 @@ import com.example.task_1.dto.UserDTO;
 import com.example.task_1.dto.UserSetPasswordDTO;
 import com.example.task_1.dto.UserSetRoleDTO;
 import com.example.task_1.entities.Status;
+import com.example.task_1.entities.UserEntity;
 import com.example.task_1.exception.UserAlreadyExistException;
 import com.example.task_1.exception.UserNotFoundException;
 import com.example.task_1.services.UserService;
@@ -34,7 +35,6 @@ public class UserController {
     public ResponseEntity<?> create(@Valid @RequestBody UserDTO userDTO) throws UserAlreadyExistException {
         userService.create(userDTO);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
-
     }
 
     // Получение списка всех пользователей
