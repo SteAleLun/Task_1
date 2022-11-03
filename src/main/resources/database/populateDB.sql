@@ -1,2 +1,4 @@
-/*INSERT INTO userEntities VALUES
-    (1, 'salung@gmail.com', 'Lung', 'Stepan', 'Alexandrovich', 2, 'adminSa', 'ACTIVE', 23)*/
+insert into roles values
+                      ('ba7de22d-f176-4594-a250-77e580f10aca' , 'Администратор' , 'администрирует');
+                      ('18d2745a-c050-4a3d-97bb-9addd96f30eb' , 'Сотрудник' , 'сотрудничает');
+                      ('ca03925b-1ac9-41d2-955b-b9d98109df4d' , 'Наблюдатель' , 'наблюдает');

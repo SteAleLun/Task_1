@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS users
     family_name VARCHAR(200) NOT NULL ,
     user_name VARCHAR(200) NOT NULL ,
     middle_name VARCHAR(200) ,
-    user_role UUID NOT NULL ,
+    --user_role UUID NOT NULL REFERENCES roles(role_id) ON DELETE CASCADE,
+    user_role UUID NOT NULL,
     user_password VARCHAR(254) NOT NULL,
     status VARCHAR(32) NOT NULL,
     created_at TIMESTAMP NOT NULL
@@ -20,7 +21,7 @@ CREATE TABLE IF NOT EXISTS roles
     description VARCHAR(254) NOT NULL
 );
 
-
+-- для @ManyToMany
 /*CREATE TABLE IF NOT EXISTS employees
 (
     id BIGSERIAL PRIMARY KEY ,

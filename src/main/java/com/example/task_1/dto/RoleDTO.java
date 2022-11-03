@@ -1,14 +1,10 @@
 package com.example.task_1.dto;
 
-import com.example.task_1.entities.UserEntity;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
 import java.util.UUID;
 
 
@@ -32,11 +28,6 @@ public class RoleDTO {
     @NotBlank(message = "Поле 'description' не должно быть пустой строкой!")
     private String description;
 
-    /// ???????
-    @Transient
-    //@ManyToMany(mappedBy = "roleEntities")
-    private Set<UserEntity> userEntities;
-
     public UUID getId() {
         return id;
     }
@@ -59,13 +50,5 @@ public class RoleDTO {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Set<UserEntity> getUserEntities() {
-        return userEntities;
-    }
-
-    public void setUserEntities(Set<UserEntity> userEntities) {
-        this.userEntities = userEntities;
     }
 }

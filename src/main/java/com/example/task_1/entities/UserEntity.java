@@ -6,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
-import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -42,7 +41,7 @@ public class UserEntity {
     @NotBlank
     private String password;
 
-    @Column(name ="user_role")
+    @Column(name ="user_role", insertable = false, updatable = false)
     @NotNull
     private UUID role;
 
@@ -53,6 +52,18 @@ public class UserEntity {
     @Column(name ="created_at")
     @CreationTimestamp
     private Timestamp createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "user_role")
+    private RoleEntity roleEntity;
+
+    public RoleEntity getRoleEntity() {
+        return roleEntity;
+    }
+
+    public void setRoleEntity(RoleEntity roleEntity) {
+        this.roleEntity = roleEntity;
+    }
 
     public UserEntity(){
     }

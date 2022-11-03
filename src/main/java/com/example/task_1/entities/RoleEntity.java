@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -22,6 +23,9 @@ public class RoleEntity {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "roleEntity")
+    private Set<UserEntity> userEntities;
 
     public RoleEntity(){
     }
