@@ -1,5 +1,6 @@
 package com.example.task_1.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -36,61 +37,35 @@ public class UserEntity {
     @NotBlank
     private String middleName;
 
+    // Роль пользователя
+    @ManyToOne
+    @JoinColumn(name = "user_role")
+    private RoleEntity roleEntity;
+
     @Column(name ="user_password")
     @NotNull
     @NotBlank
     private String password;
 
-    @Column(name ="user_role", insertable = false, updatable = false)
-    @NotNull
-    private UUID role;
-
     @Column(name ="status", length = 32, columnDefinition = "varchar(32) default 'ACTIVE'")
     @Enumerated(value = EnumType.STRING)
     private Status status = Status.ACTIVE;
 
+    // Дата и время создания пользователя
     @Column(name ="created_at")
     @CreationTimestamp
+    @JsonFormat(
+            shape = JsonFormat.Shape.STRING,
+            pattern = "dd-MM-yyyy hh:mm:ss")
     private Timestamp createdAt;
 
-    @ManyToOne
-    @JoinColumn(name = "user_role")
-    private RoleEntity roleEntity;
 
-    public RoleEntity getRoleEntity() {
-        return roleEntity;
-    }
-
-    public void setRoleEntity(RoleEntity roleEntity) {
-        this.roleEntity = roleEntity;
-    }
-
+    // Constructors
     public UserEntity(){
     }
 
-    public UserEntity(UUID id, String email,
-                      String familyName, String name, String middleName,
-                      String password, UUID role,
-                      Status status, Timestamp createdAt) {
-        this.id = id;
-        this.email = email;
-        this.familyName = familyName;
-        this.name = name;
-        this.middleName = middleName;
-        this.password = password;
-        this.role = role;
-        this.status = status;
-        this.createdAt = createdAt;
-    }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
+    // Get/Set
     public UUID getId() {
         return id;
     }
@@ -131,6 +106,14 @@ public class UserEntity {
         this.middleName = middleName;
     }
 
+    public RoleEntity getRoleEntity() {
+        return roleEntity;
+    }
+
+    public void setRoleEntity(RoleEntity roleEntity) {
+        this.roleEntity = roleEntity;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -139,12 +122,12 @@ public class UserEntity {
         this.password = password;
     }
 
-    public UUID getRole() {
-        return role;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setRole(UUID role) {
-        this.role = role;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public Timestamp getCreatedAt() {
@@ -153,20 +136,5 @@ public class UserEntity {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "status=" + status +
-                ", id=" + id +
-                ", email='" + email + '\'' +
-                ", familyName='" + familyName + '\'' +
-                ", name='" + name + '\'' +
-                ", middleName='" + middleName + '\'' +
-                ", password='" + password + '\'' +
-                ", roles=" + role +
-                ", createdAt=" + createdAt +
-                '}';
     }
 }

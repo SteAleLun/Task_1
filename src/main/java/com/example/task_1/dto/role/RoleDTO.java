@@ -1,7 +1,5 @@
-package com.example.task_1.dto;
+package com.example.task_1.dto.role;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -18,7 +16,6 @@ import java.util.UUID;
 
 public class RoleDTO {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @NotNull(message = "Поле 'name' является обязательным для заполнения!")

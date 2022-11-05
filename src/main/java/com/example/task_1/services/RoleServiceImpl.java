@@ -1,24 +1,21 @@
 package com.example.task_1.services;
 
-import com.example.task_1.dto.RoleDTO;
-import com.example.task_1.dto.UpdateRoleDTO;
+import com.example.task_1.dto.role.RoleDTO;
+import com.example.task_1.dto.role.UpdateRoleDTO;
 import com.example.task_1.entities.RoleEntity;
 import com.example.task_1.exception.RoleNotFoundException;
-import com.example.task_1.exception.UserNotFoundException;
 import com.example.task_1.repositories.RoleRepository;
 import com.example.task_1.services.utils.MappingUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class RoleServiceImpl implements RoleService {
 
-    @Autowired
     private final RoleRepository roleRepository;
-
     private final MappingUtils mappingUtils;
 
     public RoleServiceImpl(RoleRepository roleRepository, MappingUtils mappingUtils) {
@@ -51,8 +48,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public RoleDTO update(UUID id, UpdateRoleDTO updDTO) throws RoleNotFoundException {
         if (roleRepository.existsById(id)) {
-            RoleDTO roleDTO = mappingUtils.mapToRoleDto(roleRepository.
-                    findById(id).orElse(new RoleEntity()));
+            RoleDTO roleDTO = new RoleDTO();
 
             roleDTO.setName(updDTO.getName());
             roleDTO.setDescription(updDTO.getDescription());

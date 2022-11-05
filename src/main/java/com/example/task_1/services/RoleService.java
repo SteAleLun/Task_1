@@ -1,8 +1,8 @@
 package com.example.task_1.services;
 
 
-import com.example.task_1.dto.RoleDTO;
-import com.example.task_1.dto.UpdateRoleDTO;
+import com.example.task_1.dto.role.RoleDTO;
+import com.example.task_1.dto.role.UpdateRoleDTO;
 import com.example.task_1.exception.RoleNotFoundException;
 
 import java.util.List;

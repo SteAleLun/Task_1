@@ -1,28 +1,22 @@
-package com.example.task_1.dto;
+package com.example.task_1.dto.user;
 
 import com.example.task_1.entities.Status;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonRawValue;
-import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.*;
+import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-public class UserDTO {
+public class GetUserDTO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonRawValue
     private UUID id;
 
     @NotNull(message = "Поле 'email' является обязательным для заполнения!")
     @NotBlank(message = "Поле 'email' не должно быть пустой строкой!")
-    @Email
+    @Email(message = "Некорректный формат введённого email!")
     private String email;
 
     @NotNull(message = "Поле 'familyName' является обязательным для заполнения!")
@@ -33,52 +27,23 @@ public class UserDTO {
     @NotBlank(message = "Поле 'name' не должно быть пустой строкой!")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "Поле 'middleName' не должно быть пустой строкой!")
     private String middleName;
 
     @NotNull(message = "Поле 'role' является обязательным для заполнения!")
     private UUID role;
 
-    @NotNull(message = "Поле 'password' является обязательным для заполнения!")
-    @NotBlank(message = "Поле 'password' не должно быть пустой строкой!")
-    private String password;
-
-    @Column(name ="status", length = 32, columnDefinition = "varchar(32) default 'ACTIVE'")
-    @Enumerated(value = EnumType.STRING)
     private Status status = Status.ACTIVE;
 
-    @CreationTimestamp
-    @JsonFormat(
-            shape = JsonFormat.Shape.STRING,
-            pattern = "dd-MM-yyyy hh:mm:ss")
     private Timestamp createdAt;
 
-    public UserDTO(){
+
+    // Constructors
+    public GetUserDTO(){
     }
 
-    public UserDTO(UUID id, String email,
-                   String familyName, String name, String middleName,
-                   UUID role, String password,
-                   Status status, Timestamp createdAt) {
-        this.id = id;
-        this.email = email;
-        this.familyName = familyName;
-        this.name = name;
-        this.middleName = middleName;
-        this.role = role;
-        this.password = password;
-        this.status = status;
-        this.createdAt = createdAt;
-    }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
+    // Get/Set
     public UUID getId() {
         return id;
     }
@@ -119,20 +84,20 @@ public class UserDTO {
         this.middleName = middleName;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public UUID getRole() {
         return role;
     }
 
     public void setRole(UUID role) {
         this.role = role;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public Timestamp getCreatedAt() {

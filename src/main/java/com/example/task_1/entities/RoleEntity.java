@@ -27,9 +27,19 @@ public class RoleEntity {
     @OneToMany(mappedBy = "roleEntity")
     private Set<UserEntity> userEntities;
 
+
+    // Constructors
     public RoleEntity(){
     }
 
+    public RoleEntity(UUID id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
+
+    // Get/Set
     public UUID getId() {
         return id;
     }

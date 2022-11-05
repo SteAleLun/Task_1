@@ -1,4 +1,4 @@
-package com.example.task_1.dto;
+package com.example.task_1.dto.user;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;

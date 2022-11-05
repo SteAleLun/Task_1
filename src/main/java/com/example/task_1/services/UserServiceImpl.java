@@ -1,18 +1,16 @@
 package com.example.task_1.services;
 
 
-import com.example.task_1.dto.UpdateUserDTO;
-import com.example.task_1.dto.UserDTO;
-import com.example.task_1.dto.UserSetPasswordDTO;
-import com.example.task_1.dto.UserSetRoleDTO;
+import com.example.task_1.dto.user.*;
+import com.example.task_1.entities.RoleEntity;
 import com.example.task_1.entities.Status;
 import com.example.task_1.entities.UserEntity;
 import com.example.task_1.exception.InvalidPasswordException;
 import com.example.task_1.exception.UserAlreadyExistException;
 import com.example.task_1.exception.UserNotFoundException;
+import com.example.task_1.repositories.RoleRepository;
 import com.example.task_1.repositories.UserRepository;
 import com.example.task_1.services.utils.MappingUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,28 +22,32 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
     private final UserRepository userRepository;
-
-    @Autowired
+    private final RoleRepository roleRepository;
     private final MappingUtils mappingUtils;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    public UserServiceImpl(UserRepository userRepository, MappingUtils mappingUtils) {
+    public UserServiceImpl(UserRepository userRepository,
+                           RoleRepository roleRepository,
+                           MappingUtils mappingUtils,
+                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.mappingUtils = mappingUtils;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public void create(UserDTO userDTO) throws UserAlreadyExistException {
-        if(emailExist(userDTO.getEmail())){
-            throw new UserAlreadyExistException("Пользователь с таким email уже существует: " + userDTO.getEmail());
+    public void create(CreateUserDTO createUserDTO) throws UserAlreadyExistException {
+        if(emailExist(createUserDTO.getEmail())){
+            throw new UserAlreadyExistException("Пользователь с таким email уже существует: " + createUserDTO.getEmail());
         }
-        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword())); // с этой строкой всё в порядке?
-        userRepository.save(mappingUtils.mapToUserEntity(userDTO));
-        // читать из базы заново read()
+        UserEntity user = new UserEntity();
+
+        user.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
+        user.setRoleEntity(roleRepository.findById(createUserDTO.getRole()).orElse(new RoleEntity()));
+
+        userRepository.save(mappingUtils.mapToUserEntity(createUserDTO));
     }
 
     private boolean emailExist(String email){
@@ -53,52 +55,51 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> readAll() {
+    public List<GetUserDTO> readAll() {
         return userRepository.findAll().stream()
-                .map(mappingUtils::mapToUserDto)
+                .map(mappingUtils::mapToGetUserDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public UserDTO read(UUID id) throws UserNotFoundException {
+    public GetUserDTO read(UUID id) throws UserNotFoundException {
         if(userRepository.existsById(id)){
-            return mappingUtils.mapToUserDto(userRepository.findById(id).orElse(new UserEntity()));
+            return mappingUtils.mapToGetUserDTO(userRepository.findById(id).orElse(new UserEntity()));
         } else {
             throw new UserNotFoundException("Пользователь с идентификатором '" + id + "' не найден!");
         }
     }
 
     @Override
-    public UserDTO update(UUID id, UpdateUserDTO updDTO) throws UserNotFoundException {
+    public GetUserDTO update(UUID id, UpdateUserDTO updDTO) throws UserNotFoundException {
         if (userRepository.existsById(id)){
-            UserDTO userDTO = mappingUtils.mapToUserDto(userRepository.
+            GetUserDTO getUserDTO = mappingUtils.mapToGetUserDTO(userRepository.
                     findById(id).orElse(new UserEntity()));
 
-            userDTO.setEmail(updDTO.getEmail());
-            userDTO.setFamilyName(updDTO.getFamilyName());
-            userDTO.setName(updDTO.getName());
-            userDTO.setMiddleName(updDTO.getMiddleName());
+            getUserDTO.setEmail(updDTO.getEmail());
+            getUserDTO.setFamilyName(updDTO.getFamilyName());
+            getUserDTO.setName(updDTO.getName());
+            getUserDTO.setMiddleName(updDTO.getMiddleName());
 
-            userRepository.save(mappingUtils.mapToUserEntity(userDTO));
-            return userDTO;
+            userRepository.save(mappingUtils.mapToUserEntity(getUserDTO));
+            return getUserDTO;
         } else {
             throw new UserNotFoundException("Пользователь с идентификатором '" + id + "' не найден!");
         }
     }
 
     @Override
-    public UserDTO updatePassword(UUID id, UserSetPasswordDTO uspDTO) throws UserNotFoundException, InvalidPasswordException {
+    public GetUserDTO updatePassword(UUID id, UserSetPasswordDTO uspDTO) throws UserNotFoundException, InvalidPasswordException {
         if(userRepository.existsById(id)){
-            UserDTO userDTO = mappingUtils.mapToUserDto(userRepository.
-                    findById(id).orElse(new UserEntity()));
-            if(passwordEncoder.matches(uspDTO.getOldPassword(), userDTO.getPassword())) {
+            UserEntity userEntity = userRepository.findById(id).orElse(new UserEntity());
+            if(passwordEncoder.matches(uspDTO.getOldPassword(), userEntity.getPassword())) {
                 if(Objects.equals( uspDTO.getNewPassword(),
                                    uspDTO.getConfirmNewPassword() )) {
 
-                    userDTO.setPassword(passwordEncoder.encode( uspDTO.getNewPassword() ));
+                    userEntity.setPassword(passwordEncoder.encode(uspDTO.getNewPassword()));
 
-                    userRepository.save(mappingUtils.mapToUserEntity(userDTO));
-                    return userDTO;
+                    userRepository.save(userEntity);
+                    return mappingUtils.mapToGetUserDTO(userEntity);
                 } else {
                     throw new InvalidPasswordException("Ошибка при подтверждении нового пароля. Пароли не совпадают!");
                 }
@@ -111,30 +112,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateRole(UUID id, UserSetRoleDTO usrDTO) throws UserNotFoundException {
+    public GetUserDTO updateRole(UUID id, UserSetRoleDTO usrDTO) throws UserNotFoundException {
         if(userRepository.existsById(id)){
-            UserDTO userDTO = mappingUtils.mapToUserDto(userRepository.
-                    findById(id).orElse(new UserEntity()));
+            UserEntity userEntity = userRepository.findById(id).orElse(new UserEntity());
 
-            userDTO.setRole(usrDTO.getRole());
+            userEntity.setRoleEntity(roleRepository.findById(usrDTO.getRole()).orElse(new RoleEntity()));
 
-            userRepository.save(mappingUtils.mapToUserEntity(userDTO)); // лишнее
-            return userDTO;
+            userRepository.save(userEntity);
+            return mappingUtils.mapToGetUserDTO(userEntity);
         } else {
             throw new UserNotFoundException("Пользователь с идентификатором '" + id + "' не найден!");
         }
     }
 
     @Override
-    public UserDTO setState (UUID id, Status state) throws UserNotFoundException {
+    public GetUserDTO setState (UUID id, Status state) throws UserNotFoundException {
         if(userRepository.existsById(id)){
-            UserDTO userDTO = mappingUtils.mapToUserDto(userRepository.
-                    findById(id).orElse(new UserEntity()));
+            UserEntity userEntity = userRepository.findById(id).orElse(new UserEntity());
 
-            userDTO.setStatus(state);
+            userEntity.setStatus(state);
 
-            userRepository.save(mappingUtils.mapToUserEntity(userDTO)); // лишнее
-            return userDTO;
+            userRepository.save(userEntity);
+            return mappingUtils.mapToGetUserDTO(userEntity);
         } else {
             throw new UserNotFoundException("Пользователь с идентификатором '" + id + "' не найден!");
         }
