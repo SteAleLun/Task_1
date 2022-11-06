@@ -16,7 +16,7 @@ public class UpdateUserDTO {
 
     @NotNull(message = "Поле 'email' является обязательным для заполнения!")
     @NotBlank(message = "Поле 'email' не должно быть пустой строкой!")
-    @Email
+    @Email(message = "Некорректный формат введённого email!")
     private String email;
 
     @NotNull(message = "Поле 'familyName' является обязательным для заполнения!")

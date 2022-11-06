@@ -27,6 +27,16 @@ public class AppExceptionHandler {
         return errorMap;
     }
 
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public Map<String, String> IllegalArgumentExceptionHandle(IllegalArgumentException exception){
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", exception.getMessage());
+        return errorMap;
+    }
+
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(UserNotFoundException.class)
     public Map<String, String> UserNotFoundExceptionHandle(UserNotFoundException exception){

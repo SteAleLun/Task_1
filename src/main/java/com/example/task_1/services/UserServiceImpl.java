@@ -6,6 +6,7 @@ import com.example.task_1.entities.RoleEntity;
 import com.example.task_1.entities.Status;
 import com.example.task_1.entities.UserEntity;
 import com.example.task_1.exception.InvalidPasswordException;
+import com.example.task_1.exception.RoleNotFoundException;
 import com.example.task_1.exception.UserAlreadyExistException;
 import com.example.task_1.exception.UserNotFoundException;
 import com.example.task_1.repositories.RoleRepository;
@@ -38,21 +39,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void create(CreateUserDTO createUserDTO) throws UserAlreadyExistException {
+    public void create(CreateUserDTO createUserDTO) throws UserAlreadyExistException, RoleNotFoundException {
         if(emailExist(createUserDTO.getEmail())){
             throw new UserAlreadyExistException("Пользователь с таким email уже существует: " + createUserDTO.getEmail());
         }
+        if(roleNotExist(createUserDTO.getRole())){
+            throw new RoleNotFoundException("Роль с ID: '" + createUserDTO.getRole() + "' не существует");
+        }
+
         UserEntity user = new UserEntity();
 
+        user.setEmail(createUserDTO.getEmail());
+        user.setFamilyName(createUserDTO.getFamilyName());
+        user.setName(createUserDTO.getName());
+        user.setMiddleName(createUserDTO.getMiddleName());
         user.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
         user.setRoleEntity(roleRepository.findById(createUserDTO.getRole()).orElse(new RoleEntity()));
 
-        userRepository.save(mappingUtils.mapToUserEntity(createUserDTO));
+        userRepository.save(user);
     }
 
     private boolean emailExist(String email){
         return userRepository.findByEmail(email) != null;
     }
+
+    private boolean roleNotExist(UUID role) { return !roleRepository.existsById(role); }
 
     @Override
     public List<GetUserDTO> readAll() {
@@ -71,18 +82,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public GetUserDTO update(UUID id, UpdateUserDTO updDTO) throws UserNotFoundException {
+    public GetUserDTO update(UUID id, UpdateUserDTO updDTO) throws UserNotFoundException, UserAlreadyExistException {
         if (userRepository.existsById(id)){
-            GetUserDTO getUserDTO = mappingUtils.mapToGetUserDTO(userRepository.
-                    findById(id).orElse(new UserEntity()));
+            if(emailExist(updDTO.getEmail())){
+                throw new UserAlreadyExistException("Пользователь с таким email уже существует: " + updDTO.getEmail());
+            }
+            UserEntity userEntity = userRepository.findById(id).orElse(new UserEntity());
 
-            getUserDTO.setEmail(updDTO.getEmail());
-            getUserDTO.setFamilyName(updDTO.getFamilyName());
-            getUserDTO.setName(updDTO.getName());
-            getUserDTO.setMiddleName(updDTO.getMiddleName());
+            userEntity.setEmail(updDTO.getEmail());
+            userEntity.setFamilyName(updDTO.getFamilyName());
+            userEntity.setName(updDTO.getName());
+            userEntity.setMiddleName(updDTO.getMiddleName());
 
-            userRepository.save(mappingUtils.mapToUserEntity(getUserDTO));
-            return getUserDTO;
+            userRepository.save(userEntity);
+            return mappingUtils.mapToGetUserDTO(userEntity);
         } else {
             throw new UserNotFoundException("Пользователь с идентификатором '" + id + "' не найден!");
         }
@@ -112,10 +125,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public GetUserDTO updateRole(UUID id, UserSetRoleDTO usrDTO) throws UserNotFoundException {
+    public GetUserDTO updateRole(UUID id, UserSetRoleDTO usrDTO) throws UserNotFoundException, RoleNotFoundException {
         if(userRepository.existsById(id)){
-            UserEntity userEntity = userRepository.findById(id).orElse(new UserEntity());
+            if(roleNotExist(usrDTO.getRole())) {
+                throw new RoleNotFoundException("Роль с ID: '" + usrDTO.getRole() + "' не существует");
+            }
 
+            UserEntity userEntity = userRepository.findById(id).orElse(new UserEntity());
             userEntity.setRoleEntity(roleRepository.findById(usrDTO.getRole()).orElse(new RoleEntity()));
 
             userRepository.save(userEntity);

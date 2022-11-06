@@ -1,6 +1,9 @@
 package com.example.task_1.dto.user;
 
 import com.example.task_1.entities.Status;
+import com.example.task_1.validation.UserStatusSubset;
+import com.example.task_1.validation.ValueOfEnum;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
@@ -33,8 +36,15 @@ public class GetUserDTO {
     @NotNull(message = "Поле 'role' является обязательным для заполнения!")
     private UUID role;
 
+    // валидация не работает
+    @UserStatusSubset(anyOf = {Status.ACTIVE, Status.INACTIVE}, message = "Указан несуществующий статус!")
+    @ValueOfEnum(enumClass = Status.class, message = "Указан несуществующий статус!")
     private Status status = Status.ACTIVE;
 
+    @JsonFormat(
+            shape = JsonFormat.Shape.STRING,
+            pattern = "dd-MM-yyyy hh:mm:ss",
+            timezone = "Asia/Dubai")
     private Timestamp createdAt;
 
 

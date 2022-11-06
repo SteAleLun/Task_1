@@ -1,6 +1,6 @@
 package com.example.task_1.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -54,9 +54,6 @@ public class UserEntity {
     // Дата и время создания пользователя
     @Column(name ="created_at")
     @CreationTimestamp
-    @JsonFormat(
-            shape = JsonFormat.Shape.STRING,
-            pattern = "dd-MM-yyyy hh:mm:ss")
     private Timestamp createdAt;
 
 

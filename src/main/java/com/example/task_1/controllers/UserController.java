@@ -4,6 +4,7 @@ package com.example.task_1.controllers;
 import com.example.task_1.dto.user.*;
 import com.example.task_1.entities.Status;
 import com.example.task_1.exception.InvalidPasswordException;
+import com.example.task_1.exception.RoleNotFoundException;
 import com.example.task_1.exception.UserAlreadyExistException;
 import com.example.task_1.exception.UserNotFoundException;
 import com.example.task_1.services.UserService;
@@ -31,7 +32,7 @@ public class UserController {
 
     // Создание пользователя
     @PostMapping(value = "/users")
-    public ResponseEntity<GetUserDTO> create(@Valid @RequestBody CreateUserDTO createUserDTO) throws UserAlreadyExistException {
+    public ResponseEntity<GetUserDTO> create(@Valid @RequestBody CreateUserDTO createUserDTO) throws UserAlreadyExistException, RoleNotFoundException {
         GetUserDTO getUserDTO = mappingUtils.mapToGetUserDTO(
                 mappingUtils.mapToUserEntity(createUserDTO)
         );
@@ -63,7 +64,7 @@ public class UserController {
     // Изменить пользователя
     @PutMapping(value = "/users/{id}")
     public ResponseEntity<?> update(@PathVariable(name="id") UUID id,
-                                    @Valid @RequestBody UpdateUserDTO updDTO) throws UserNotFoundException {
+                                    @Valid @RequestBody UpdateUserDTO updDTO) throws UserNotFoundException, UserAlreadyExistException {
         GetUserDTO getUserDTOS = userService.update(id, updDTO);
         return new ResponseEntity<>(getUserDTOS, HttpStatus.OK);
     }
@@ -79,7 +80,7 @@ public class UserController {
     // Изменение роли пользователя
     @PostMapping(value = "/users/{id}/set-role")
     public ResponseEntity<?> updateRole(@PathVariable(name="id") UUID id,
-                                        @Valid @RequestBody UserSetRoleDTO usrDTO) throws UserNotFoundException {
+                                        @Valid @RequestBody UserSetRoleDTO usrDTO) throws UserNotFoundException, RoleNotFoundException {
         GetUserDTO getUserDTOS = userService.updateRole(id, usrDTO);
         return new ResponseEntity<>(getUserDTOS, HttpStatus.OK);
     }
