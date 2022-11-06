@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -133,5 +134,40 @@ public class UserEntity {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserEntity that = (UserEntity) o;
+
+        if (!Objects.equals(id, that.id)) return false;
+        if (!Objects.equals(email, that.email)) return false;
+        if (!Objects.equals(familyName, that.familyName)) return false;
+        if (!Objects.equals(name, that.name)) return false;
+        if (!Objects.equals(middleName, that.middleName)) return false;
+        if (!Objects.equals(roleEntity, that.roleEntity)) return false;
+        if (!Objects.equals(password, that.password)) return false;
+        if (status != that.status) return false;
+        return Objects.equals(createdAt, that.createdAt);
+    }
+
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", familyName='" + familyName + '\'' +
+                ", name='" + name + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", roleEntity=" + roleEntity +
+                ", password='" + password + '\'' +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }
