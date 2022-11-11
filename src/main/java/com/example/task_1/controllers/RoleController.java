@@ -3,7 +3,7 @@ package com.example.task_1.controllers;
 import com.example.task_1.dto.role.RoleDTO;
 import com.example.task_1.dto.role.UpdateRoleDTO;
 import com.example.task_1.exception.RoleNotFoundException;
-import com.example.task_1.services.RoleService;
+import com.example.task_1.services.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

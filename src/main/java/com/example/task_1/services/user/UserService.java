@@ -1,4 +1,4 @@
-package com.example.task_1.services;
+package com.example.task_1.services.user;
 
 
 import com.example.task_1.dto.user.*;
@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public interface UserService {
 
-    void create(CreateUserDTO createUserDTO) throws UserAlreadyExistException, RoleNotFoundException;
+    GetUserDTO create(CreateUserDTO createUserDTO) throws UserAlreadyExistException, RoleNotFoundException;
 
     List<GetUserDTO> readAll();
 

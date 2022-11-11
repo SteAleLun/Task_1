@@ -1,4 +1,4 @@
-package com.example.task_1.services;
+package com.example.task_1.services.user;
 
 
 import com.example.task_1.dto.user.*;
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void create(CreateUserDTO createUserDTO) throws UserAlreadyExistException, RoleNotFoundException {
+    public GetUserDTO create(CreateUserDTO createUserDTO) throws UserAlreadyExistException, RoleNotFoundException {
         if(emailExist(createUserDTO.getEmail())){
             throw new UserAlreadyExistException("Пользователь с таким email уже существует: " + createUserDTO.getEmail());
         }
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
         user.setRoleEntity(roleRepository.findById(createUserDTO.getRole()).orElse(new RoleEntity()));
 
-        userRepository.save(user);
+        return mappingUtils.mapToGetUserDTO(userRepository.save(user));
     }
 
     private boolean emailExist(String email){

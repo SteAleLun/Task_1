@@ -7,8 +7,7 @@ import com.example.task_1.exception.InvalidPasswordException;
 import com.example.task_1.exception.RoleNotFoundException;
 import com.example.task_1.exception.UserAlreadyExistException;
 import com.example.task_1.exception.UserNotFoundException;
-import com.example.task_1.services.UserService;
-import com.example.task_1.services.utils.MappingUtils;
+import com.example.task_1.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,22 +21,17 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
-    private final MappingUtils mappingUtils;
 
     @Autowired
-    public UserController(UserService userService, MappingUtils mappingUtils) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.mappingUtils = mappingUtils;
     }
 
     // Создание пользователя
     @PostMapping(value = "/users")
     public ResponseEntity<GetUserDTO> create(@Valid @RequestBody CreateUserDTO createUserDTO) throws UserAlreadyExistException, RoleNotFoundException {
-        GetUserDTO getUserDTO = mappingUtils.mapToGetUserDTO(
-                mappingUtils.mapToUserEntity(createUserDTO)
-        );
+        GetUserDTO getUserDTO = userService.create(createUserDTO);
 
-        userService.create(createUserDTO);
         return new ResponseEntity<>(getUserDTO, HttpStatus.CREATED);
     }
 
@@ -86,9 +80,10 @@ public class UserController {
     }
 
     // изменение статуса пользователя
+
     @PostMapping(value = "/users/{id}/{state}")
     public ResponseEntity<?> setState(@PathVariable(name="id") UUID id,
-                                      @Valid @PathVariable(name="state") Status state) throws UserNotFoundException {
+                                      @Valid @PathVariable(name="state") Status state) throws UserNotFoundException { //
         GetUserDTO getUserDTOS = userService.setState(id, state);
         return new ResponseEntity<>(getUserDTOS, HttpStatus.OK);
     }
