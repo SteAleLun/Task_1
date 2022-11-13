@@ -3,43 +3,145 @@ package com.example.task_1.entities;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.UUID;
 
+@Entity
+@Table(name="attachments")
 public class AttachmentEntity {
 
     @Id
+    @Column(name ="attachment_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @Column(name ="title")
     @NotNull
     @NotBlank
     private String title;
 
     // создать кастомную валидацию для символов
+    @Column(name ="file_name")
     @NotNull
     @NotBlank
     private String filename;
 
+    @Column(name ="description")
     private String description;
 
+    @Column(name ="version_of")
+    // эта аннотация вызыввает ошибку
+    //@Version
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID versionOf;
 
+    @Column(name ="file_path")
     private String filePath;
 
+    @Column(name ="uploaded")
     private boolean uploaded;
 
-    private UUID cardId;
+    @ManyToOne
+    @JoinColumn(name = "card_id")
+    private UserEntity userEntity;
 
+    @Column(name ="created_at")
     @CreationTimestamp
     private Timestamp createdAt;
 
     // возможно неправильная реализация
+    @Column(name ="deleted_at")
     @UpdateTimestamp
     private Timestamp deletedAt;
+
+
+
+
+    // Constructors
+    public AttachmentEntity(){
+    }
+
+    // Get/Set
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public UUID getVersionOf() {
+        return versionOf;
+    }
+
+    public void setVersionOf(UUID versionOf) {
+        this.versionOf = versionOf;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public boolean isUploaded() {
+        return uploaded;
+    }
+
+    public void setUploaded(boolean uploaded) {
+        this.uploaded = uploaded;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
+    }
 }

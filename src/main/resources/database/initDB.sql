@@ -6,6 +6,22 @@ CREATE TABLE IF NOT EXISTS roles
     description VARCHAR(254) NOT NULL
 );
 
+
+CREATE TABLE IF NOT EXISTS attachments
+(
+    attachment_id UUID PRIMARY KEY ,
+    title VARCHAR(254) NOT NULL ,
+    file_name VARCHAR(254) NOT NULL,
+    description VARCHAR(254) NOT NULL,
+    version_of UUID,
+    file_path VARCHAR(254) NOT NULL,
+    uploaded BOOLEAN,
+    card_id UUID NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    created_at TIMESTAMP NOT NULL,
+    deleted_at TIMESTAMP NOT NULL
+);
+
+
 CREATE TABLE IF NOT EXISTS users
 (
     user_id UUID PRIMARY KEY ,

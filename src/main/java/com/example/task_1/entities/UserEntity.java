@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -42,6 +43,10 @@ public class UserEntity {
     @ManyToOne
     @JoinColumn(name = "user_role")
     private RoleEntity roleEntity;
+
+    // Файлы пользователя
+    @OneToMany(mappedBy = "userEntity")
+    private Set<AttachmentEntity> attachmentEntities;
 
     @Column(name ="user_password")
     @NotNull
