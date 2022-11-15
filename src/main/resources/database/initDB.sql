@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS attachments
     uploaded BOOLEAN,
     card_id UUID NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
     created_at TIMESTAMP NOT NULL,
-    deleted_at TIMESTAMP NOT NULL
+    deleted_at TIMESTAMP
 );
 
 

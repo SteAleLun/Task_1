@@ -1,65 +1,47 @@
-package com.example.task_1.entities;
+package com.example.task_1.dto.attachment;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.persistence.*;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-@Entity
-@Table(name="attachments")
-public class AttachmentEntity {
+public class GetAttachmentMetadataDTO {
 
     @Id
-    @Column(name ="attachment_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name ="title")
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Поле 'name' является обязательным для заполнения!")
+    @NotBlank(message = "Поле 'name' не должно быть пустой строкой!")
     private String title;
 
-    // создать кастомную валидацию для символов
-    @Column(name ="file_name")
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Поле 'name' является обязательным для заполнения!")
+    @NotBlank(message = "Поле 'name' не должно быть пустой строкой!")
     private String filename;
 
-    @Column(name ="description")
+    @NotNull(message = "Поле 'name' является обязательным для заполнения!")
+    @NotBlank(message = "Поле 'name' не должно быть пустой строкой!")
     private String description;
 
-    @Column(name ="version_of")
-    // эта аннотация вызыввает ошибку
-    //@Version
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID versionOf;
 
-    @Column(name ="file_path")
-    private String filePath;
-
-    @Column(name ="uploaded")
     private boolean uploaded;
 
-    @ManyToOne
-    @JoinColumn(name = "card_id")
-    private UserEntity userEntity;
+    private UUID cardId;
 
-    @Column(name ="created_at")
-    @CreationTimestamp
+    @JsonFormat(
+            shape = JsonFormat.Shape.STRING,
+            pattern = "dd-MM-yyyy hh:mm:ss",
+            timezone = "Asia/Dubai")
     private Timestamp createdAt;
 
-    // возможно неправильная реализация
-    @Column(name ="deleted_at")
-    //@UpdateTimestamp
     private Timestamp deletedAt;
 
 
-    // Constructors
-    public AttachmentEntity(){
+    // Constructor
+    public GetAttachmentMetadataDTO() {
     }
 
 
@@ -104,21 +86,20 @@ public class AttachmentEntity {
         this.versionOf = versionOf;
     }
 
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
-
     public boolean isUploaded() {
         return uploaded;
     }
 
-
     public void setUploaded(boolean uploaded) {
         this.uploaded = uploaded;
+    }
+
+    public UUID getCardId() {
+        return cardId;
+    }
+
+    public void setCardId(UUID cardId) {
+        this.cardId = cardId;
     }
 
     public Timestamp getCreatedAt() {
@@ -135,13 +116,5 @@ public class AttachmentEntity {
 
     public void setDeletedAt(Timestamp deletedAt) {
         this.deletedAt = deletedAt;
-    }
-
-    public UserEntity getUserEntity() {
-        return userEntity;
-    }
-
-    public void setUserEntity(UserEntity userEntity) {
-        this.userEntity = userEntity;
     }
 }

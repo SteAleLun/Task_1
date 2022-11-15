@@ -1,8 +1,10 @@
 package com.example.task_1.services.utils;
 
+import com.example.task_1.dto.attachment.GetAttachmentMetadataDTO;
 import com.example.task_1.dto.role.RoleDTO;
 import com.example.task_1.dto.user.CreateUserDTO;
 import com.example.task_1.dto.user.GetUserDTO;
+import com.example.task_1.entities.AttachmentEntity;
 import com.example.task_1.entities.RoleEntity;
 import com.example.task_1.entities.UserEntity;
 import com.example.task_1.repositories.RoleRepository;
@@ -52,6 +54,19 @@ public class MappingUtils {
         dto.setRole(entity.getRoleEntity().getId());
         dto.setStatus(entity.getStatus());
         dto.setCreatedAt(entity.getCreatedAt());
+        return dto;
+    }
+
+    public GetAttachmentMetadataDTO mapToGetAttachmentMetadataDTO(AttachmentEntity entity){
+        GetAttachmentMetadataDTO dto = new GetAttachmentMetadataDTO();
+        dto.setId(entity.getId());
+        dto.setTitle(entity.getTitle());
+        dto.setFilename(entity.getFilename());
+        dto.setDescription(entity.getDescription());
+        dto.setVersionOf(entity.getVersionOf());
+        dto.setUploaded(entity.isUploaded());
+        dto.setCreatedAt(entity.getCreatedAt());
+        dto.setDeletedAt(entity.getDeletedAt());
         return dto;
     }
 
