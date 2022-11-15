@@ -1,5 +1,15 @@
 
-CREATE TABLE IF NOT EXISTS roles
+
+CREATE TABLE IF NOT EXISTS uploaded_file
+(
+    file_id UUID PRIMARY KEY ,
+    file_name VARCHAR(254) NOT NULL ,
+    file_type VARCHAR(254) NOT NULL,
+    file_data SMALLINT NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS role
 (
     role_id UUID PRIMARY KEY ,
     role_name VARCHAR(254) NOT NULL ,

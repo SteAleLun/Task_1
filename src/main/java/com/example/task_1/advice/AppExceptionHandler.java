@@ -9,6 +9,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,6 +68,14 @@ public class AppExceptionHandler {
     public Map<String, String> InvalidPasswordExceptionHandle(InvalidPasswordException exception){
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("errorMessage", exception.getMessage());
+        return errorMap;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public Map<String, String> MaxUploadSizeExceededExceptionHandle(MaxUploadSizeExceededException exception){
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", "File size can't be bigger than 32MB");
         return errorMap;
     }
 

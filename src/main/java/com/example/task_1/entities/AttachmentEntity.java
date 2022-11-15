@@ -34,7 +34,7 @@ public class AttachmentEntity {
 
     @Column(name ="version_of")
     // эта аннотация вызыввает ошибку
-    //@Version
+    // @Version
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID versionOf;
 
