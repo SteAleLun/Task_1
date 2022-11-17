@@ -9,14 +9,13 @@ import com.example.task_1.repositories.UserRepository;
 import com.example.task_1.services.utils.MappingUtils;
 import org.springframework.stereotype.Service;
 
-import java.security.URIParameter;
+import java.util.UUID;
 
 @Service
 public class AttachmentServiceImpl implements AttachmentService{
 
     private final AttachmentRepository attachmentRepository;
     private final UserRepository userRepository;
-
     private final MappingUtils mappingUtils;
 
     public AttachmentServiceImpl(AttachmentRepository attachmentRepository,
@@ -29,7 +28,7 @@ public class AttachmentServiceImpl implements AttachmentService{
 
     // Добавление метаданных вложения
     @Override
-    public GetAttachmentMetadataDTO create(CreateAttachmentMetadataDTO createDTO){
+    public GetAttachmentMetadataDTO create(CreateAttachmentMetadataDTO createDTO, UUID id){
 
         AttachmentEntity attachment = new AttachmentEntity();
 
@@ -41,7 +40,7 @@ public class AttachmentServiceImpl implements AttachmentService{
         // Как мне обратиться к сущности пользователя без создания "лишнего"
         // не предусмотренного заданием поля cardId в createDTO?
         // Как определить его id?
-        attachment.setUserEntity(userRepository.findById(createDTO.getCardId()).orElse(new UserEntity()));
+        attachment.setUserEntity(userRepository.findById(id).orElse(new UserEntity()));
 
         return mappingUtils.mapToGetAttachmentMetadataDTO(attachmentRepository.save(attachment));
     }

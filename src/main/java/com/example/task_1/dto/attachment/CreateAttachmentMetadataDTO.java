@@ -21,9 +21,6 @@ public class CreateAttachmentMetadataDTO {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID versionOf;
 
-    @NotNull(message = "Поле 'filename' является обязательным для заполнения!")
-    private UUID cardId;
-
 
     // Constructors
     public CreateAttachmentMetadataDTO() {
@@ -63,13 +60,6 @@ public class CreateAttachmentMetadataDTO {
         this.versionOf = versionOf;
     }
 
-    public UUID getCardId() {
-        return cardId;
-    }
-
-    public void setCardId(UUID cardId) {
-        this.cardId = cardId;
-    }
 }
 
 
