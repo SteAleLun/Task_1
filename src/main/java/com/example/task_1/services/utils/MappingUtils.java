@@ -57,13 +57,14 @@ public class MappingUtils {
         return dto;
     }
 
+    // конвертация из AttachmentEntity в GetAttachmentMetadataDTO
     public GetAttachmentMetadataDTO mapToGetAttachmentMetadataDTO(AttachmentEntity entity){
         GetAttachmentMetadataDTO dto = new GetAttachmentMetadataDTO();
         dto.setId(entity.getId());
         dto.setTitle(entity.getTitle());
         dto.setFilename(entity.getFilename());
         dto.setDescription(entity.getDescription());
-        dto.setVersionOf(entity.getVersionOf());
+        dto.setVersionOf(entity.getAttachmentEntity().getId());
         dto.setUploaded(entity.isUploaded());
         dto.setCreatedAt(entity.getCreatedAt());
         dto.setDeletedAt(entity.getDeletedAt());

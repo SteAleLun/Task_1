@@ -1,12 +1,14 @@
 package com.example.task_1.controllers;
 
-
+import com.example.task_1.dto.attachment.CreateAttachmentMetadataDTO;
+import com.example.task_1.dto.attachment.GetAttachmentMetadataDTO;
 import com.example.task_1.dto.user.*;
 import com.example.task_1.entities.Status;
 import com.example.task_1.exception.InvalidPasswordException;
 import com.example.task_1.exception.RoleNotFoundException;
 import com.example.task_1.exception.UserAlreadyExistException;
 import com.example.task_1.exception.UserNotFoundException;
+import com.example.task_1.services.attachment.AttachmentService;
 import com.example.task_1.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,10 +24,13 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
+    private final AttachmentService attachmentService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService,
+                          AttachmentService attachmentService) {
         this.userService = userService;
+        this.attachmentService = attachmentService;
     }
 
     // Создание пользователя
@@ -80,7 +86,6 @@ public class UserController {
     }
 
     // изменение статуса пользователя
-
     @PostMapping(value = "/users/{id}/{state}")
     public ResponseEntity<?> setState(@PathVariable(name="id") UUID id,
                                       @Valid @PathVariable(name="state") Status state) throws UserNotFoundException { //
@@ -96,5 +101,15 @@ public class UserController {
         return deleted
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    }
+
+
+    // Добавление метаданных вложения
+    @PostMapping(value = "/users/{id}/attachments")
+    public ResponseEntity<GetAttachmentMetadataDTO> create(@PathVariable(name="id") UUID id,
+                                                           @RequestBody CreateAttachmentMetadataDTO createAttachmentMetadataDTO) throws UserNotFoundException, FileNotFoundException {
+        GetAttachmentMetadataDTO getAttachmentMetadataDTO = attachmentService.create(createAttachmentMetadataDTO, id);
+
+        return new ResponseEntity<>(getAttachmentMetadataDTO, HttpStatus.CREATED);
     }
 }

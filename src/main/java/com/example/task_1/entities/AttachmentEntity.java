@@ -1,13 +1,13 @@
 package com.example.task_1.entities;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.UUID;
+
 
 @Entity
 @Table(name="attachments")
@@ -32,11 +32,9 @@ public class AttachmentEntity {
     @Column(name ="description")
     private String description;
 
-    @Column(name ="version_of")
-    // эта аннотация вызыввает ошибку
-    //@Version
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID versionOf;
+    @OneToOne
+    @JoinColumn(name="version_of")
+    private AttachmentEntity attachmentEntity;
 
     @Column(name ="file_path")
     private String filePath;
@@ -52,9 +50,7 @@ public class AttachmentEntity {
     @CreationTimestamp
     private Timestamp createdAt;
 
-    // возможно неправильная реализация
     @Column(name ="deleted_at")
-    //@UpdateTimestamp
     private Timestamp deletedAt;
 
 
@@ -96,12 +92,12 @@ public class AttachmentEntity {
         this.description = description;
     }
 
-    public UUID getVersionOf() {
-        return versionOf;
+    public AttachmentEntity getAttachmentEntity() {
+        return attachmentEntity;
     }
 
-    public void setVersionOf(UUID versionOf) {
-        this.versionOf = versionOf;
+    public void setAttachmentEntity(AttachmentEntity attachmentEntity) {
+        this.attachmentEntity = attachmentEntity;
     }
 
     public String getFilePath() {
@@ -115,7 +111,6 @@ public class AttachmentEntity {
     public boolean isUploaded() {
         return uploaded;
     }
-
 
     public void setUploaded(boolean uploaded) {
         this.uploaded = uploaded;
