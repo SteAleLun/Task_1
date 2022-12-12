@@ -4,19 +4,19 @@ import com.example.task_1.dto.attachment.CreateAttachmentMetadataDTO;
 import com.example.task_1.dto.attachment.GetAttachmentMetadataDTO;
 import com.example.task_1.dto.user.*;
 import com.example.task_1.entities.Status;
-import com.example.task_1.exception.InvalidPasswordException;
-import com.example.task_1.exception.RoleNotFoundException;
-import com.example.task_1.exception.UserAlreadyExistException;
-import com.example.task_1.exception.UserNotFoundException;
+import com.example.task_1.exception.*;
+import com.example.task_1.repositories.AttachmentRepository;
 import com.example.task_1.services.attachment.AttachmentService;
 import com.example.task_1.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,12 +25,15 @@ public class UserController {
 
     private final UserService userService;
     private final AttachmentService attachmentService;
+    private final AttachmentRepository attachmentRepository;
 
     @Autowired
     public UserController(UserService userService,
-                          AttachmentService attachmentService) {
+                          AttachmentService attachmentService,
+                          AttachmentRepository attachmentRepository) {
         this.userService = userService;
         this.attachmentService = attachmentService;
+        this.attachmentRepository = attachmentRepository;
     }
 
     // Создание пользователя
@@ -54,10 +57,10 @@ public class UserController {
     // Получение пользователя по id
     @GetMapping(value ="/users/{id}")
     public ResponseEntity<GetUserDTO> read(@PathVariable(name="id") UUID id) throws UserNotFoundException {
-        final GetUserDTO getUserDTOS = userService.read(id);
+        final GetUserDTO getUserDTO = userService.read(id);
 
-        return getUserDTOS != null
-                ? new ResponseEntity<>(getUserDTOS, HttpStatus.OK)
+        return getUserDTO != null
+                ? new ResponseEntity<>(getUserDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
@@ -106,10 +109,59 @@ public class UserController {
 
     // Добавление метаданных вложения
     @PostMapping(value = "/users/{id}/attachments")
-    public ResponseEntity<GetAttachmentMetadataDTO> create(@PathVariable(name="id") UUID id,
+    public ResponseEntity<GetAttachmentMetadataDTO> createMetadata(@PathVariable(name="id") UUID id,
                                                            @RequestBody CreateAttachmentMetadataDTO createAttachmentMetadataDTO) throws UserNotFoundException, FileNotFoundException {
-        GetAttachmentMetadataDTO getAttachmentMetadataDTO = attachmentService.create(createAttachmentMetadataDTO, id);
+        GetAttachmentMetadataDTO getAttachmentMetadataDTO = attachmentService.create(id, createAttachmentMetadataDTO);
 
         return new ResponseEntity<>(getAttachmentMetadataDTO, HttpStatus.CREATED);
     }
+
+
+    // TESTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // Добавление файла вложения (локальное сохранение)
+    @PostMapping(value ="/files/{id}")
+    public ResponseEntity<GetAttachmentMetadataDTO> createFile(@PathVariable(name="id") UUID id,
+                                                               @RequestParam("file")MultipartFile file) throws IOException, FileAlreadyUploadedException {
+
+        GetAttachmentMetadataDTO getAttachmentMetadataDTO = attachmentService.uploadToLocal(id, file);
+
+        return new ResponseEntity<>(getAttachmentMetadataDTO, HttpStatus.OK);
+    }
+
+
+    // TESTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // Удаление файла
+    @DeleteMapping(value = "/files/{id}")
+    public ResponseEntity<?> deleteFile(@PathVariable(name = "id") UUID id) throws FileNotFoundException {
+        final boolean deleted = attachmentService.delete(id);
+
+        return deleted
+                ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    }
+
+
+    // TESTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // Получить список файлов для пользователя
+    @GetMapping(value = "/users/{id}/attachments")
+    public ResponseEntity<List<GetAttachmentMetadataDTO>> getFiles(@PathVariable(name = "id") UUID id) throws UserNotFoundException {
+        final List<GetAttachmentMetadataDTO> dtos = attachmentService.getFiles(id);
+
+        return dtos != null && !dtos.isEmpty()
+                ? new ResponseEntity<>(dtos, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
+    // TESTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // Получить информацию о файле
+    @GetMapping(value = "/files/{id}")
+    public ResponseEntity<GetAttachmentMetadataDTO> getMetadata(@PathVariable(name = "id") UUID id) throws FileNotFoundException {
+        final GetAttachmentMetadataDTO dto = attachmentService.getMetadata(id);
+
+        return dto != null
+                ? new ResponseEntity<>(dto, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 }
