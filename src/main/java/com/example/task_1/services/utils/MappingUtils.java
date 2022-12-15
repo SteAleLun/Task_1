@@ -64,8 +64,12 @@ public class MappingUtils {
         dto.setTitle(entity.getTitle());
         dto.setFilename(entity.getFilename());
         dto.setDescription(entity.getDescription());
-        dto.setVersionOf(entity.getAttachmentEntity().getId());
+        dto.setVersionOf(
+                entity.getAttachmentEntity() != null ?
+                entity.getAttachmentEntity().getId() : null
+        );
         dto.setUploaded(entity.isUploaded());
+        dto.setCardId(entity.getUserEntity().getId());
         dto.setCreatedAt(entity.getCreatedAt());
         dto.setDeletedAt(entity.getDeletedAt());
         return dto;

@@ -37,6 +37,10 @@ public class GetAttachmentMetadataDTO {
             timezone = "Asia/Dubai")
     private Timestamp createdAt;
 
+    @JsonFormat(
+            shape = JsonFormat.Shape.STRING,
+            pattern = "dd-MM-yyyy hh:mm:ss",
+            timezone = "Asia/Dubai")
     private Timestamp deletedAt;
 
 

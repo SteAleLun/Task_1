@@ -25,17 +25,20 @@ public class FileUploadController {
         this.fileUploadService = fileUploadService;
     }
 
+
     // Локальное сохранение
     @PostMapping("/upload/local")
     public void uploadLocal(@RequestParam("file")MultipartFile multipartFile){
         fileUploadService.uploadToLocal(multipartFile);
     }
 
+
     // Сохранение в БД
     @PostMapping("/upload/db")
     public void uploadDb(@RequestParam("file")MultipartFile multipartFile){
         fileUploadService.uploadToDb(multipartFile);
     }
+
 
     // Сохранить в БД и получить информацию о файле и ссылку на скачивание
     @PostMapping("/another-upload/db")
@@ -59,14 +62,16 @@ public class FileUploadController {
         return response;
     }
 
+
     // Получение информации о файле
     @GetMapping("get-file-info/{id}")
     public UploadedFile getFileInfo(@PathVariable(name= "id") UUID id){
         return fileUploadService.downloadFile(id);
     }
 
+
     // Скачать файл
-    @GetMapping("download/{id}")
+    @GetMapping("download-file/{id}")
     public ResponseEntity<Resource> downloadFile(@PathVariable(name= "id") UUID id){
         UploadedFile uploadedFile = fileUploadService.downloadFile(id);
 

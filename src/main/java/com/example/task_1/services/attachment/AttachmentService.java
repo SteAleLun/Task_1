@@ -2,6 +2,7 @@ package com.example.task_1.services.attachment;
 
 import com.example.task_1.dto.attachment.CreateAttachmentMetadataDTO;
 import com.example.task_1.dto.attachment.GetAttachmentMetadataDTO;
+import com.example.task_1.dto.attachment.UploadedAttachmentDTO;
 import com.example.task_1.exception.FileAlreadyUploadedException;
 import com.example.task_1.exception.UserNotFoundException;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,5 +28,8 @@ public interface AttachmentService {
 
     // Получить информацию о файле
     GetAttachmentMetadataDTO getMetadata(UUID id) throws FileNotFoundException;
+
+    // Выгрузить файл
+    UploadedAttachmentDTO downloadFile(UUID id) throws IOException;
 }
 

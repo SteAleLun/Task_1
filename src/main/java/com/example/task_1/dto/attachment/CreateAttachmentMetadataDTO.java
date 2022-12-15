@@ -18,7 +18,6 @@ public class CreateAttachmentMetadataDTO {
 
     private String description;
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID versionOf;
 
 

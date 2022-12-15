@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS uploaded_file
 );
 
 
-CREATE TABLE IF NOT EXISTS role
+CREATE TABLE IF NOT EXISTS roles
 (
     role_id UUID PRIMARY KEY ,
     role_name VARCHAR(254) NOT NULL ,
@@ -22,9 +22,9 @@ CREATE TABLE IF NOT EXISTS attachments
     attachment_id UUID PRIMARY KEY ,
     title VARCHAR(254) NOT NULL ,
     file_name VARCHAR(254) NOT NULL,
-    description VARCHAR(254) NOT NULL,
-    version_of UUID,
-    file_path VARCHAR(254) NOT NULL,
+    description VARCHAR(254),
+    version_of UUID REFERENCES attachments(attachment_id) ON DELETE CASCADE,
+    file_path VARCHAR(254),
     uploaded BOOLEAN,
     card_id UUID NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
     created_at TIMESTAMP NOT NULL,
