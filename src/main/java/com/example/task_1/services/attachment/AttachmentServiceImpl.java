@@ -13,9 +13,11 @@ import com.example.task_1.services.utils.MappingUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
@@ -165,8 +167,13 @@ public class AttachmentServiceImpl implements AttachmentService {
                         UploadedAttachmentDTO dto = new UploadedAttachmentDTO();
 
                         dto.setFileName(attachment.getFilename());
-                        dto.setFileType(getFileType(attachment));
-                        dto.setFileData(Files.readAllBytes(Paths.get(attachment.getFilePath())));
+                        dto.setFileType(Files.probeContentType(new File(attachment.getFilename()).toPath()));
+
+                        try {
+                            dto.setFileData(Files.readAllBytes(Paths.get(attachment.getFilePath())));
+                        } catch (NoSuchFileException exception) {
+                            throw new FileNotFoundException("Файла не существует");
+                        }
 
                         return dto;
                     }
@@ -177,13 +184,6 @@ public class AttachmentServiceImpl implements AttachmentService {
             else throw new FileNotFoundException("Отсутствует путь к файлу в системе");
         }
         else throw new FileNotFoundException("Файл вложения с идентификатором '" + id + "' не найден");
-    }
-
-
-    // Получить тип файла из пути в системе
-    private String getFileType(AttachmentEntity attachment){
-        return attachment.getFilePath()
-                .substring(attachment.getFilePath().lastIndexOf(".") + 1);
     }
 
 }

@@ -170,7 +170,7 @@ public class UserController {
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(file.getFileType()))
-                    .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename= "
+                    .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename = "
                             + file.getFileName())
                                 .body(new ByteArrayResource(file.getFileData()));
     }
