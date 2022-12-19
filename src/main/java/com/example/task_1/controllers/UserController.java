@@ -161,7 +161,6 @@ public class UserController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    // TESTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // Выгрузить файл
     @GetMapping(value = "/download/{id}")
     public ResponseEntity<Resource> download(@PathVariable(name = "id") UUID id) throws IOException {
